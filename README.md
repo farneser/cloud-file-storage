@@ -5,6 +5,22 @@
 Многопользовательское файловое облако. Пользователи сервиса могут использовать его для загрузки и хранения файлов.
 Источником вдохновения для проекта является Google Drive.
 
+## Запуск
+
+### Полностью локально
+
+```bash
+sudo docker-compose up -f docker-compose-local.yml
+```
+
+### Бд на сервере
+
+Необходимо в `docker-compose-remote.yml` настроить 
+
+```bash
+sudo docker-compose up -f docker-compose-remote.yml
+```
+
 ## Что нужно знать
 
 - [Java](https://zhukovsd.github.io/Technologies/Java/) - коллекции, ООП
