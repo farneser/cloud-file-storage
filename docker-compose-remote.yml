@@ -1,0 +1,22 @@
+version: '3'
+services:
+  redis:
+    image: redis:latest
+    container_name: redis-container
+    ports:
+      - "6379:6379"
+  cloud-file-storage:
+    build:
+      context: .
+    depends_on:
+      - redis
+    environment:
+      POSTGRES_HOST: your-remote-db-host
+      POSTGRES_PORT: 5432
+      POSTGRES_DB: your-remote-db-name
+      POSTGRES_USERNAME: your-remote-db-username
+      POSTGRES_PASSWORD: your-remote-db-password
+      REDIS_HOST: host.docker.internal
+      REDIS_PORT: 6379
+    ports:
+      - "8080:8080"
