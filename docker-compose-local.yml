@@ -1,0 +1,35 @@
+version: '3'
+services:
+  postgres:
+    image: postgres:latest
+    container_name: postgres-container
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: cloud-file-storage
+      POSTGRES_USER: postgresql
+      POSTGRES_PASSWORD: postgresql
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
+  redis:
+    image: redis:latest
+    container_name: redis-container
+    ports:
+      - "6379:6379"
+  cloud-file-storage:
+    build:
+      context: .
+    container_name: cloud-file-storage
+    depends_on:
+      - postgres
+      - redis
+    environment:
+      POSTGRES_HOST: host.docker.internal
+      POSTGRES_PORT: 5432
+      POSTGRES_DB: cloud-file-storage
+      POSTGRES_USERNAME: postgresql
+      POSTGRES_PASSWORD: postgresql
+      REDIS_HOST: host.docker.internal
+      REDIS_PORT: 6379
+    ports:
+      - "8080:8080"
