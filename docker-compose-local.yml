@@ -6,11 +6,12 @@ services:
     ports:
       - "5432:5432"
     environment:
-      POSTGRES_DB: cloud-file-storage
-      POSTGRES_USER: postgresql
-      POSTGRES_PASSWORD: postgresql
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
     volumes:
-      - ./postgres-data:/var/lib/postgresql/data
+      - ./data/postgres-data:/var/lib/postgresql/data
+      - ./data/init-scripts:/docker-entrypoint-initdb.d
   redis:
     image: redis:latest
     container_name: redis-container
@@ -28,7 +29,7 @@ services:
       POSTGRES_HOST: postgres
       POSTGRES_PORT: 5432
       POSTGRES_DB: cloud-file-storage
-      POSTGRES_USERNAME: postgresql
-      POSTGRES_PASSWORD: postgresql
+      POSTGRES_USERNAME: postgres
+      POSTGRES_PASSWORD: postgres
       REDIS_HOST: redis
       REDIS_PORT: 6379
