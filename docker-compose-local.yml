@@ -19,17 +19,16 @@ services:
   cloud-file-storage:
     build:
       context: .
-    container_name: cloud-file-storage
+      dockerfile: Dockerfile
+    ports:
+      - "18080:8080"
     depends_on:
       - postgres
-      - redis
     environment:
-      POSTGRES_HOST: host.docker.internal
+      POSTGRES_HOST: postgres
       POSTGRES_PORT: 5432
       POSTGRES_DB: cloud-file-storage
       POSTGRES_USERNAME: postgresql
       POSTGRES_PASSWORD: postgresql
-      REDIS_HOST: host.docker.internal
+      REDIS_HOST: redis
       REDIS_PORT: 6379
-    ports:
-      - "8080:8080"
