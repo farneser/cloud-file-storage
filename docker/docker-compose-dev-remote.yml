@@ -7,7 +7,7 @@ services:
       - "6379:6379"
   cloud-file-storage:
     build:
-      context: .
+      context: ..
       dockerfile: Dockerfile-dev
     ports:
       - "18080:8080"

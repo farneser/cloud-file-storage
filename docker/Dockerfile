@@ -1,8 +1,8 @@
 FROM maven:3.9.4 AS build
 
-COPY src /app/src
+COPY ../src /app/src
 
-COPY pom.xml /app
+COPY ../pom.xml /app
 
 ENV POSTGRES_HOST ${POSTGRES_HOST}
 ENV POSTGRES_PORT ${POSTGRES_PORT}

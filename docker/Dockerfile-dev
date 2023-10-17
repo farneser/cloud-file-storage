@@ -3,7 +3,7 @@ FROM maven:3.9.4 AS build
 #CMD ["./mvnw", "install"]
 #CMD ["./mvnw", "install"]
 
-COPY target /app/target
+COPY ../target /app/target
 
 FROM eclipse-temurin:17
 
