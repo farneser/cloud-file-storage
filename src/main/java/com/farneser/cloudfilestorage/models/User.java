@@ -1,4 +1,4 @@
-package com.farneser.cloudfilestorage;
+package com.farneser.cloudfilestorage.models;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

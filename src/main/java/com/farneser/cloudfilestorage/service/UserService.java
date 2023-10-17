@@ -1,5 +1,7 @@
-package com.farneser.cloudfilestorage;
+package com.farneser.cloudfilestorage.service;
 
+import com.farneser.cloudfilestorage.models.User;
+import com.farneser.cloudfilestorage.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

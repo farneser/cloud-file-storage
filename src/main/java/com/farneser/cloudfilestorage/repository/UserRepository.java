@@ -1,6 +1,7 @@
-package com.farneser.cloudfilestorage;
+package com.farneser.cloudfilestorage.repository;
 
 
+import com.farneser.cloudfilestorage.models.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UserRepository extends JpaRepository<User, Long> {

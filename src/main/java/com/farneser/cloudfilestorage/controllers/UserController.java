@@ -1,7 +1,7 @@
 package com.farneser.cloudfilestorage.controllers;
 
-import com.farneser.cloudfilestorage.User;
-import com.farneser.cloudfilestorage.UserService;
+import com.farneser.cloudfilestorage.models.User;
+import com.farneser.cloudfilestorage.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
