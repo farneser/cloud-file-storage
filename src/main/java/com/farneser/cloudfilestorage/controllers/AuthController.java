@@ -11,24 +11,30 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/register")
-public class RegisterController {
+public class AuthController {
 
     private final UserRepository userRepository;
 
     @Autowired
-    public RegisterController(UserRepository userRepository) {
+    public AuthController(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
-    @GetMapping()
-    public String showRegistrationForm(Model model) {
+    @GetMapping("/login")
+    public String getLogin(Model model) {
+        model.addAttribute("user", new User());
+        return "login";
+    }
+
+    @GetMapping("/register")
+    public String getRegister(Model model) {
         model.addAttribute("user", new User());
         return "register";
     }
 
-    @PostMapping()
-    public String processRegistration(@ModelAttribute("user") User user) {
+    @PostMapping("/register")
+    public String postRegister(@ModelAttribute("user") User user) {
+        System.out.println(user);
         userRepository.save(user);
         return "redirect:/login";
     }
