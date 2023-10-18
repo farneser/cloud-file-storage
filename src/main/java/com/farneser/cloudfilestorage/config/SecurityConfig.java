@@ -4,6 +4,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.annotation.web.configurers.HttpBasicConfigurer;
 import org.springframework.security.config.annotation.web.configurers.LogoutConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
 
@@ -14,7 +16,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(req -> {
-                    req.requestMatchers("/register", "/styles", "js", "/images").permitAll();
+                    req.requestMatchers("/register").permitAll();
                     req.anyRequest().authenticated();
                 })
                 .formLogin(login -> {
@@ -22,7 +24,9 @@ public class SecurityConfig {
                     login.defaultSuccessUrl("/");
                     login.permitAll();
                 })
-                .logout(LogoutConfigurer::permitAll);
+                .logout(LogoutConfigurer::permitAll)
+                .httpBasic(HttpBasicConfigurer::notify)
+                .csrf(AbstractHttpConfigurer::disable);
 
         return http.build();
     }
