@@ -1,5 +1,8 @@
 # Шестое задание курса [java-backend-learning-course](https://zhukovsd.github.io/java-backend-learning-course/)
 
+[![Java CI with Maven](https://github.com/farneser/cloud-file-storage/actions/workflows/maven.yml/badge.svg)](https://github.com/farneser/cloud-file-storage/actions/workflows/maven.yml)
+[![Docker Image CI](https://github.com/farneser/cloud-file-storage/actions/workflows/docker-image.yml/badge.svg)](https://github.com/farneser/cloud-file-storage/actions/workflows/docker-image.yml)
+
 ## [Задание](https://zhukovsd.github.io/java-backend-learning-course/Projects/CloudFileStorage/)
 
 Многопользовательское файловое облако. Пользователи сервиса могут использовать его для загрузки и хранения файлов.
