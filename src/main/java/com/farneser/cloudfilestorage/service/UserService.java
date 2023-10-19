@@ -28,7 +28,7 @@ public class UserService implements UserDetailsService {
             throw new UserRegistrationException("Username is already taken");
         }
 
-        if (!registerDto.getPassword().equals(registerDto.getConfirmPassword())){
+        if (!registerDto.getPassword().equals(registerDto.getConfirmPassword())) {
             throw new UserRegistrationException("Passwords must match");
         }
 

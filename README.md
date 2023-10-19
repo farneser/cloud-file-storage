@@ -15,7 +15,7 @@ sudo docker-compose up -f docker-compose-local.yml
 
 ### Бд на сервере
 
-Необходимо в `docker-compose-remote.yml` настроить 
+Необходимо в `docker-compose-remote.yml` настроить
 
 ```bash
 sudo docker-compose up -f docker-compose-remote.yml
