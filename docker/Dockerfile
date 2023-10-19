@@ -2,6 +2,8 @@ FROM maven:3.9.4 AS build
 
 COPY ../src /app/src
 
+COPY ../checkstyle.xml /app/checkstyle.xml
+
 COPY ../pom.xml /app
 
 ENV POSTGRES_HOST ${POSTGRES_HOST}
