@@ -5,6 +5,16 @@ services:
     container_name: redis-container
     ports:
       - "6379:6379"
+  minio:
+    image: minio/minio:latest
+    environment:
+      MINIO_ACCESS_KEY: youraccesskey
+      MINIO_SECRET_KEY: yoursecretkey
+    ports:
+      - "9000:9000"
+    volumes:
+      - ../data/minio-data:/data
+    command: server /data
   cloud-file-storage:
     build:
       context: ..
@@ -21,3 +31,6 @@ services:
       POSTGRES_PASSWORD: postgres
       REDIS_HOST: redis
       REDIS_PORT: 6379
+      MINIO_HOST: http://minio:9000
+      MINIO_ACCESS_KEY: youraccesskey
+      MINIO_SECRET_KEY: yoursecretkey

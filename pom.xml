@@ -76,6 +76,11 @@
             <artifactId>spring-security-test</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>com.jlefebure</groupId>
+            <artifactId>spring-boot-starter-minio</artifactId>
+            <version>1.10</version>
+        </dependency>
     </dependencies>
 
     <build>
