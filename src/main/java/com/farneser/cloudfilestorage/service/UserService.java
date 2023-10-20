@@ -33,6 +33,7 @@ public class UserService implements UserDetailsService {
         }
 
         var user = new User();
+
         user.setUsername(registerDto.getUsername());
         user.setPassword(passwordEncoder.encode(registerDto.getPassword()));
 

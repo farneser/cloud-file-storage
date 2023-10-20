@@ -1,10 +1,10 @@
 FROM maven:3.9.4 AS build
 
-COPY ../src /app/src
+COPY src /app/src
 
-COPY ../checkstyle.xml /app/checkstyle.xml
+COPY checkstyle.xml /app/checkstyle.xml
 
-COPY ../pom.xml /app
+COPY pom.xml /app
 
 ENV POSTGRES_HOST ${POSTGRES_HOST}
 ENV POSTGRES_PORT ${POSTGRES_PORT}
@@ -15,19 +15,6 @@ ENV REDIS_HOST ${REDIS_HOST}
 ENV REDIS_PORT ${REDIS_PORT}
 
 RUN mvn -f /app/pom.xml clean package
-#    -Dfile=.mvn/wrapper/maven-wrapper.jar  \
-#    -Dversion=1.0  \
-#    -Dpackaging=jar  \
-#    -DgeneratePom=true \
-
-#    -DPOSTGRES_HOST=POSTGRES_HOST  \
-#    -DPOSTGRES_HOST=POSTGRES_HOST  \
-#    -DPOSTGRES_PORT=POSTGRES_PORT  \
-#    -DPOSTGRES_DB=POSTGRES_DB  \
-#    -DPOSTGRES_USERNAME=POSTGRES_USERNAME  \
-#    -DPOSTGRES_PASSWORD=POSTGRES_PASSWORD  \
-#    -DREDIS_HOST=REDIS_HOST  \
-#    -DREDIS_PORT=REDIS_PORT
 
 FROM eclipse-temurin:17
 

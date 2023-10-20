@@ -36,7 +36,9 @@ public class AuthController {
     @PostMapping("/register")
     public String postRegister(@ModelAttribute("user") RegisterDto registerDto) {
         try {
-            userService.registerNewUser(registerDto);
+            var user = userService.registerNewUser(registerDto);
+
+            System.out.println(user);
         } catch (UserRegistrationException e) {
             return "register";
         }
