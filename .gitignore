@@ -1,6 +1,7 @@
 HELP.md
 target/
 postgres-data/
+minio-data/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/

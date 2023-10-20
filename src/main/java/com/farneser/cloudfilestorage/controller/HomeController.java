@@ -1,4 +1,4 @@
-package com.farneser.cloudfilestorage.controllers;
+package com.farneser.cloudfilestorage.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

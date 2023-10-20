@@ -1,4 +1,4 @@
-package com.farneser.cloudfilestorage.controllers;
+package com.farneser.cloudfilestorage.controller;
 
 import com.farneser.cloudfilestorage.dto.RegisterDto;
 import com.farneser.cloudfilestorage.exception.UserRegistrationException;

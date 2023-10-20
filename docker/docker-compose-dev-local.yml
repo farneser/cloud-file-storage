@@ -46,3 +46,5 @@ services:
       MINIO_HOST: http://minio:9000
       MINIO_ACCESS_KEY: youraccesskey
       MINIO_SECRET_KEY: yoursecretkey
+      LOGGING_LEVEL: DEBUG
+      MINIO_FILES_BUCKET: user-files
