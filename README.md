@@ -24,6 +24,42 @@ sudo docker-compose up -f docker-compose-local.yml
 sudo docker-compose up -f docker-compose-remote.yml
 ```
 
+## Docker
+
+Образ доступен на [DockerHub](https://hub.docker.com/repository/docker/farneser/cloud-file-storage/general)
+
+Пример запуска с подключением на удаленные СУБД
+
+```yaml
+version: '3'
+
+services:
+  cloud-file-storage:
+    image: farneser/cloud-file-storage:latest
+    ports:
+      - "8080:8080"
+    environment:
+      POSTGRES_HOST: localhost
+      POSTGRES_PORT: 5432
+      POSTGRES_DB: cloud-file-storage
+      POSTGRES_USERNAME: postgres
+      POSTGRES_PASSWORD: postgres
+      REDIS_HOST: localhost
+      REDIS_PORT: 6379
+      MINIO_HOST: MINIO_HOST_PATH # example http://localhost:9000
+      MINIO_ACCESS_KEY: YOUR_MINIO_ACCESS_KEY
+      MINIO_SECRET_KEY: YOUR_MINIO_SECRET_KEY
+      MINIO_FILES_BUCKET: user-files
+```
+
+Запуск и больше информации можно узнать из [официальной документации](https://docs.docker.com/compose/reference/)
+
+Базовая команда запуска
+
+```bash
+docker-compose up -d
+```
+
 ## Что нужно знать
 
 - [Java](https://zhukovsd.github.io/Technologies/Java/) - коллекции, ООП
