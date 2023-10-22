@@ -1,6 +1,9 @@
 package com.farneser.cloudfilestorage.repository;
 
-import io.minio.*;
+import io.minio.GetObjectArgs;
+import io.minio.MakeBucketArgs;
+import io.minio.MinioClient;
+import io.minio.PutObjectArgs;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;

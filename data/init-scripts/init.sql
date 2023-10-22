@@ -1,1 +1,2 @@
-CREATE DATABASE "cloud-file-storage"
+CREATE
+DATABASE "cloud-file-storage"

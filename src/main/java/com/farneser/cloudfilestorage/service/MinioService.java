@@ -11,7 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.InputStream;
 
 @Service
-public class MinioService implements StorageService{
+public class MinioService implements StorageService {
     private final MinioRepository minioRepository;
 
     @Autowired
