@@ -1,0 +1,20 @@
+{
+  "properties": [
+    {
+      "name": "minio.endpoint",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "minio.access-key",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "minio.secret-key",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "minio.bucket",
+      "type": "java.lang.String"
+    }
+  ]
+}
