@@ -60,6 +60,23 @@ services:
 docker-compose up -d
 ```
 
+## Переменные окружения
+
+| Наименование       | Стандартное значение  | Описание                                              |
+|--------------------|-----------------------|-------------------------------------------------------|
+| POSTGRES_HOST      | localhost             | ipv4 адрес постгрес                                   |
+| POSTGRES_PORT      | 5432                  | порт постгрес                                         |
+| POSTGRES_DB        | cloud-file-storage    | название базы данных постгрес                         |
+| POSTGRES_USERNAME  | postgres              | наименование пользователя постгрес                    |
+| POSTGRES_PASSWORD  | postgres              | пароль пользователя постгрес                          |
+| REDIS_HOST         | localhost             | ipv4 адрес редис                                      |
+| REDIS_PORT         | 6379                  | порт редис                                            |
+| MINIO_HOST         | http://localhost:9000 | url подключения к minio                               |
+| MINIO_ACCESS_KEY   |                       | ключ подключения к minio                              |
+| MINIO_SECRET_KEY   |                       | секретный ключ базы minio                             |
+| MINIO_FILES_BUCKET | user-files            | наименование корневого бакета в minio                 |
+| LOGGING_LEVEL      | INFO                  | Уровень логирования (ERROR, WARN, INFO, DEBUG, TRACE) |
+
 ## Что нужно знать
 
 - [Java](https://zhukovsd.github.io/Technologies/Java/) - коллекции, ООП

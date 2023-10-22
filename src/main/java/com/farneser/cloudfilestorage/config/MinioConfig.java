@@ -13,7 +13,6 @@ import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 
-
 @Slf4j
 @Configuration
 public class MinioConfig {
@@ -40,9 +39,9 @@ public class MinioConfig {
             } else {
                 log.info("Bucket '" + bucket + "' already exists.");
             }
-        } catch (ErrorResponseException | InsufficientDataException | InternalException | InvalidKeyException |
-                 InvalidResponseException | IOException | NoSuchAlgorithmException | ServerException |
-                 XmlParserException e) {
+        } catch (ErrorResponseException | InsufficientDataException | InternalException | InvalidKeyException
+                 | InvalidResponseException | IOException | NoSuchAlgorithmException | ServerException
+                 | XmlParserException e) {
             throw new RuntimeException(e);
         }
 
