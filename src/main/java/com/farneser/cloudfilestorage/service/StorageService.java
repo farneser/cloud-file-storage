@@ -7,7 +7,7 @@ import java.io.InputStream;
 public interface StorageService {
     void createBucket(String path);
 
-    void createUserInitialBucket(long userId);
+    boolean createUserInitialBucket(long userId);
 
     void uploadFile(String bucketName, String objectName, MultipartFile file);
 
