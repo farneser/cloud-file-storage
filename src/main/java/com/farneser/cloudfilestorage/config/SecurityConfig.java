@@ -34,11 +34,10 @@ public class SecurityConfig {
                 })
                 .formLogin(login -> {
                     login.loginPage("/login");
-                    login.defaultSuccessUrl("/hello");
+                    login.defaultSuccessUrl("/");
                     login.permitAll();
                 })
                 .logout(LogoutConfigurer::permitAll)
-//                .httpBasic(HttpBasicConfigurer::notify)
                 .csrf(AbstractHttpConfigurer::disable);
 
         return http.build();
