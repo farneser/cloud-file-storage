@@ -19,9 +19,10 @@ services:
       MINIO_SECRET_KEY: yoursecretkey
     ports:
       - "9000:9000"
+      - "9001:9001"
     volumes:
       - ../data/minio-data:/data
-    command: server /data
+    command: server --console-address ":9001" /data
   redis:
     image: redis:latest
     container_name: redis-container
