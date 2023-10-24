@@ -45,7 +45,7 @@ public class AuthController {
 
             log.info("created a new user - " + user.toString());
 
-            if (minioService.createUserInitialBucket(user.getId())) {
+            if (minioService.createUserInitialFolder(user.getId())) {
                 // FIXME: 10/23/23 throw exceptions
                 log.info("created a user bucket - " + user.getId());
             } else {

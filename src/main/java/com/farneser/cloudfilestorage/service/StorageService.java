@@ -5,11 +5,11 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.InputStream;
 
 public interface StorageService {
-    void createBucket(String path);
+    void createFolder(String path);
 
-    boolean createUserInitialBucket(long userId);
+    boolean createUserInitialFolder(long userId);
 
-    void uploadFile(String bucketName, String objectName, MultipartFile file);
+    void uploadFile(String currentPath, MultipartFile file);
 
     InputStream download(String fullPath);
 }

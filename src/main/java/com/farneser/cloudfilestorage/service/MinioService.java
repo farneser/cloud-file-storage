@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.InputStream;
+import java.nio.file.Paths;
 
 @Service
 public class MinioService implements StorageService {
@@ -19,24 +20,24 @@ public class MinioService implements StorageService {
         this.minioRepository = minioRepository;
     }
 
-    public void createBucket(String path) {
-        String fullPath = getUserBucketPath() + path;
-        minioRepository.createBucket(fullPath);
+    public void createFolder(String path) {
+        String fullPath = getUserFolderPath() + path;
+        minioRepository.createFolder(fullPath);
     }
 
-    public boolean createUserInitialBucket(long userId) {
-        return minioRepository.createBucket(UserUtils.getUserBucket(userId));
+    public boolean createUserInitialFolder(long userId) {
+        return minioRepository.createFolder(UserUtils.getUserBucket(userId));
     }
 
-    public void uploadFile(String bucketName, String objectName, MultipartFile file) {
-        minioRepository.uploadFile(bucketName, objectName, file);
+    public void uploadFile(String currentPath, MultipartFile file) {
+        minioRepository.uploadFile(Paths.get(getUserFolderPath(), currentPath).toString(), file);
     }
 
     public InputStream download(String fullPath) {
-        return minioRepository.downloadFile(getUserBucketPath() + fullPath);
+        return minioRepository.downloadFile(getUserFolderPath() + fullPath);
     }
 
-    private String getUserBucketPath() {
+    private String getUserFolderPath() {
         var authentication = SecurityContextHolder.getContext().getAuthentication();
         var userDetails = (User) authentication.getPrincipal();
 
