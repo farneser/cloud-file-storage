@@ -1,7 +1,6 @@
 package com.farneser.cloudfilestorage.repository;
 
 import io.minio.GetObjectArgs;
-import io.minio.MakeBucketArgs;
 import io.minio.MinioClient;
 import io.minio.PutObjectArgs;
 import lombok.SneakyThrows;
@@ -10,7 +9,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.nio.file.Paths;
 
 @Slf4j
 @Repository
@@ -25,11 +26,16 @@ public class MinioRepository {
         this.minioClient = minioClient;
     }
 
-    public boolean createBucket(String rawBucket) {
-        var bucket = prettyBucketPath(rawBucket);
+    public boolean createFolder(String rawPath) {
+        var folderPath = prettyFolderPath(rawPath);
 
         try {
-            minioClient.makeBucket(MakeBucketArgs.builder().bucket(rootBucket + "/" + bucket).build());
+            minioClient.putObject(PutObjectArgs.builder()
+                    .bucket(rootBucket)
+                    .object(folderPath)
+                    .stream(new ByteArrayInputStream(new byte[0]), 0, -1)
+                    .build());
+
             return true;
         } catch (Exception e) {
             log.warn(e.getMessage());
@@ -38,19 +44,19 @@ public class MinioRepository {
         }
     }
 
-    private String prettyBucketPath(String rawBucket) {
-        if (!rawBucket.endsWith("/")) {
-            return rawBucket + "/";
+    private String prettyFolderPath(String rawFolder) {
+        if (!rawFolder.endsWith("/")) {
+            return rawFolder + "/";
         }
 
-        return rawBucket;
+        return rawFolder;
     }
 
-    public void uploadFile(String bucketName, String objectName, MultipartFile file) {
+    public void uploadFile(String fullPath, MultipartFile file) {
         try {
             minioClient.putObject(PutObjectArgs.builder()
-                    .bucket(bucketName)
-                    .object(objectName)
+                    .bucket(rootBucket)
+                    .object(Paths.get(fullPath, file.getOriginalFilename()).toString())
                     .stream(file.getInputStream(), file.getSize(), -1)
                     .contentType(file.getContentType())
                     .build());
