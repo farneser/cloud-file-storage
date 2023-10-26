@@ -7,6 +7,7 @@ services:
       - "6379:6379"
   minio:
     image: minio/minio:latest
+    container_name: minio-container
     environment:
       MINIO_ACCESS_KEY: youraccesskey
       MINIO_SECRET_KEY: yoursecretkey
@@ -17,6 +18,7 @@ services:
       - ../data/minio-data:/data
     command: server --console-address ":9001" /data
   cloud-file-storage:
+    container_name: cloud-file-storage
     build:
       context: ..
       dockerfile: docker/Dockerfile-dev

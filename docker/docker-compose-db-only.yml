@@ -29,25 +29,3 @@ services:
     container_name: redis-container
     ports:
       - "6379:6379"
-  cloud-file-storage:
-    container_name: cloud-file-storage
-    build:
-      context: ..
-      dockerfile: docker/Dockerfile-dev
-    ports:
-      - "8080:8080"
-    depends_on:
-      - postgres
-    environment:
-      POSTGRES_HOST: postgres
-      POSTGRES_PORT: 5432
-      POSTGRES_DB: cloud-file-storage
-      POSTGRES_USERNAME: postgres
-      POSTGRES_PASSWORD: postgres
-      REDIS_HOST: redis
-      REDIS_PORT: 6379
-      MINIO_HOST: http://minio:9000
-      MINIO_ACCESS_KEY: youraccesskey
-      MINIO_SECRET_KEY: yoursecretkey
-      LOGGING_LEVEL: DEBUG
-      MINIO_FILES_BUCKET: user-files

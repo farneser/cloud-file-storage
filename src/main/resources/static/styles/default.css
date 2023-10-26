@@ -11,3 +11,7 @@ body {
     flex-direction: column;
     justify-content: space-between;
 }
+
+.error-message{
+    color: #ff4a4a;
+}
