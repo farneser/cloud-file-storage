@@ -24,10 +24,10 @@
             <ul>
                 <li th:each="item : ${storageItems}">
                     <div th:if="${item.isDir()}">
-                        <a th:href="${'/?path=' + item.getItemPath()}" th:text="${item.getItemName()}"></a>
+                        <a th:href="${'/?path=' + item.getValidUrlPath()}" th:text="${item.getItemName()}"></a>
                     </div>
                     <div th:unless="${item.isDir()}">
-                        <a th:href="${'/storage?path=' + item.getItemPath()}" th:text="${item.getItemName()}"></a>
+                        <a th:href="${'/storage?path=' + item.getValidUrlPath()}" th:text="${item.getItemName()}"></a>
                     </div>
                 </li>
             </ul>
