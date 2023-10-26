@@ -15,6 +15,24 @@
     <div th:replace="components/controls"></div>
 
     <div id="main">
+        <!--/*@thymesVar id="message" type="java.lang.String"*/-->
+        <div th:if="${message}">
+            <span th:text="${message}"></span>
+        </div>
+
+        <div th:if="${storageItems != null and storageItems.size() > 0}">
+            <ul>
+                <li th:each="item : ${storageItems}">
+                    <span th:text="${item.getItemPath()}"></span>
+                    <span th:text="${item.isDir()}"></span>
+                </li>
+            </ul>
+        </div>
+
+        <div th:unless="${storageItems != null and storageItems.size() > 0}">
+            <div>Storage items not found</div>
+        </div>
+
     </div>
 </main>
 
