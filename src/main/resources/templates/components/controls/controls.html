@@ -1,0 +1,36 @@
+<link rel="stylesheet" type="text/css" href="controls.css">
+
+
+<nav id="controls">
+    <ul>
+        <li id="create-folder">Create Folder</li>
+        <li id="post-file">Post File</li>
+        <li id="post-folder">Post Folder</li>
+    </ul>
+</nav>
+
+<div id="popup">
+    <div class="form-container" id="create-folder-form" style="display: none;">
+        <form>
+            <label for="folderName">Folder Name:</label>
+            <input type="text" id="folderName" name="folderName" required>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+
+    <div class="form-container" id="post-file-form" style="display: none;">
+        <form>
+            <label for="file">Select a File:</label>
+            <input type="file" id="file" name="file" required>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+
+    <div class="form-container" id="post-folder-form" style="display: none;">
+        <form>
+            <label for="folder">Folder Name:</label>
+            <input type="file" webkitdirectory mozdirectory id="folder" name="folderName" required>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+</div>
