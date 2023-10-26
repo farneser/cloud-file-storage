@@ -2,6 +2,7 @@
 
 [![Java CI with Maven](https://github.com/farneser/cloud-file-storage/actions/workflows/maven.yml/badge.svg)](https://github.com/farneser/cloud-file-storage/actions/workflows/maven.yml)
 [![Docker Image CI](https://github.com/farneser/cloud-file-storage/actions/workflows/docker-image.yml/badge.svg)](https://github.com/farneser/cloud-file-storage/actions/workflows/docker-image.yml)
+[![Checkstyle validation](https://github.com/farneser/cloud-file-storage/actions/workflows/checkstyle.yml/badge.svg)](https://github.com/farneser/cloud-file-storage/actions/workflows/checkstyle.yml)
 
 ## [Задание](https://zhukovsd.github.io/java-backend-learning-course/Projects/CloudFileStorage/)
 

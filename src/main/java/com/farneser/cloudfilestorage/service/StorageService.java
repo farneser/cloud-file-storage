@@ -1,11 +1,11 @@
 package com.farneser.cloudfilestorage.service;
 
+import com.farneser.cloudfilestorage.dto.FileDto;
 import com.farneser.cloudfilestorage.dto.StorageDto;
 import com.farneser.cloudfilestorage.exception.InternalServerException;
 import com.farneser.cloudfilestorage.exception.MinioException;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.InputStream;
 import java.util.List;
 
 public interface StorageService {
@@ -17,5 +17,5 @@ public interface StorageService {
 
     void uploadFile(String currentPath, MultipartFile file) throws MinioException;
 
-    InputStream download(String fullPath) throws MinioException;
+    FileDto download(String fullPath) throws MinioException;
 }
