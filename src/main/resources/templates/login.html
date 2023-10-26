@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link th:href="@{/styles/default.css}" rel="stylesheet" />
-    <link th:href="@{/styles/auth.css}" rel="stylesheet" />
+    <link rel="stylesheet" th:href="@{/styles/default.css}"/>
+    <link rel="stylesheet" th:href="@{/styles/auth.css}"/>
     <title>Login page</title>
 </head>
 <body>
@@ -10,10 +10,10 @@
     <h2>Login</h2>
     <form method="post" th:action="@{/login}">
         <label for="username">Username:</label>
-        <input type="text" id="username" name="username" placeholder="Enter your username" required>
+        <input id="username" name="username" placeholder="Enter your username" required type="text">
 
         <label for="password">Password:</label>
-        <input type="password" id="password" name="password" placeholder="Enter your password" required>
+        <input id="password" name="password" placeholder="Enter your password" required type="password">
 
         <button type="submit">Login</button>
     </form>

@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link th:href="@{/styles/default.css}" rel="stylesheet"/>
-    <link th:href="@{/styles/auth.css}" rel="stylesheet"/>
+    <link rel="stylesheet" th:href="@{/styles/default.css}"/>
+    <link rel="stylesheet" th:href="@{/styles/auth.css}"/>
     <title>Register page</title>
 </head>
 <body>
@@ -15,13 +15,13 @@
         </div>
 
         <label for="username">Username:</label>
-        <input id="username" name="username" required="required" type="text" tabindex="1"/>
+        <input id="username" name="username" required="required" tabindex="1" type="text"/>
 
         <label for="password">Password:</label>
-        <input id="password" name="password" required="required" type="password" tabindex="2"/>
+        <input id="password" name="password" required="required" tabindex="2" type="password"/>
 
         <label for="confirmPassword">Confirm password:</label>
-        <input id="confirmPassword" name="confirmPassword" required="required" type="password" tabindex="3"/>
+        <input id="confirmPassword" name="confirmPassword" required="required" tabindex="3" type="password"/>
 
         <button type="submit">Register</button>
     </form>

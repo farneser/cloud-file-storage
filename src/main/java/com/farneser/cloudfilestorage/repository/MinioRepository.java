@@ -44,9 +44,9 @@ public class MinioRepository {
             for (var item : itemList) {
                 result.add(item.get());
             }
-        } catch (ErrorResponseException | InsufficientDataException | InternalException | InvalidKeyException |
-                 InvalidResponseException | IOException | NoSuchAlgorithmException | ServerException |
-                 XmlParserException e) {
+        } catch (ErrorResponseException | InsufficientDataException | InternalException | InvalidKeyException
+                 | InvalidResponseException | IOException | NoSuchAlgorithmException | ServerException
+                 | XmlParserException e) {
             log.error(e.getMessage());
 
             throw new InternalServerException("Error while reading files in path: " + path + ". Error: " + e.getMessage());

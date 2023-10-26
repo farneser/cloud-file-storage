@@ -9,6 +9,7 @@ import java.util.List;
 
 public interface StorageService {
     void createFolder(String path);
+
     List<StorageDto> getPathItems(String path) throws InternalServerException;
 
     boolean createUserInitialFolder(long userId);

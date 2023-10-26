@@ -1,4 +1,4 @@
-<link th:href="@{/styles/components/controls.css}" rel="stylesheet"/>
+<link rel="stylesheet" th:href="@{/styles/components/controls.css}"/>
 
 <nav id="controls">
     <ul>
@@ -10,25 +10,25 @@
 
 <div id="popup">
     <div class="form-container" id="create-folder-form" style="display: none;">
-        <form method="post" enctype="multipart/form-data" action="/storage/folder/create">
+        <form action="/storage/folder/create" enctype="multipart/form-data" method="post">
             <label for="folderName">Folder Name:</label>
-            <input type="text" id="folderName" name="folderName" required>
+            <input id="folderName" name="folderName" required type="text">
             <button type="submit">Submit</button>
         </form>
     </div>
 
     <div class="form-container" id="post-file-form" style="display: none;">
-        <form method="post" action="/storage/file" enctype="multipart/form-data">
+        <form action="/storage/file" enctype="multipart/form-data" method="post">
             <label for="file">Select a File:</label>
-            <input type="file" id="file" name="file" required>
+            <input id="file" name="file" required type="file">
             <button type="submit">Submit</button>
         </form>
     </div>
 
     <div class="form-container" id="post-folder-form" style="display: none;">
-        <form method="post" enctype="multipart/form-data" action="/storage/folder">
+        <form action="/storage/folder" enctype="multipart/form-data" method="post">
             <label for="folder">Folder Name:</label>
-            <input type="file" webkitdirectory mozdirectory id="folder" name="folderName" required>
+            <input id="folder" mozdirectory name="folderName" required type="file" webkitdirectory>
             <button type="submit">Submit</button>
         </form>
     </div>

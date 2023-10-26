@@ -19,7 +19,6 @@ public class HomeController extends BaseController {
         this.storageService = storageService;
     }
 
-
     @GetMapping()
     public String home(Model model, HttpSession session) {
         try {
