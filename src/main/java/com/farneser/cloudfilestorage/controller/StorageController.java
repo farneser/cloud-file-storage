@@ -17,10 +17,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Slf4j
 @Controller
 @RequestMapping("/storage")
-public class FilesController {
+public class StorageController {
     private final StorageService storageService;
 
-    public FilesController(StorageService storageService) {
+    public StorageController(StorageService storageService) {
         this.storageService = storageService;
     }
 

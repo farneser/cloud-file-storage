@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Slf4j
 @Controller
-@RequestMapping({"/home", "/", "/dashboard"})
+@RequestMapping({"/home", "/"})
 public class HomeController {
     private final StorageService storageService;
 
