@@ -79,7 +79,7 @@ public class MinioRepository {
         return rawFolder;
     }
 
-    public void uploadFile(String fullPath, MultipartFile file) {
+    public void uploadFile(String fullPath, MultipartFile file) throws MinioException {
         try {
             minioClient.putObject(PutObjectArgs.builder()
                     .bucket(rootBucket)
@@ -89,8 +89,9 @@ public class MinioRepository {
                     .build());
 
         } catch (Exception e) {
-            log.warn(e.getMessage());
-            // FIXME: 10/23/23 handle errors
+            log.error(e.getMessage());
+
+            throw new MinioException(e.getMessage());
         }
     }
 

@@ -1,5 +1,6 @@
 package com.farneser.cloudfilestorage.controller;
 
+import com.farneser.cloudfilestorage.exception.MinioException;
 import com.farneser.cloudfilestorage.service.StorageService;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
@@ -22,9 +23,17 @@ public class FilesController extends BaseController {
 
     @PostMapping("/file")
     public String post(@RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes, HttpSession session) {
-        storageService.uploadFile(getCurrentPath(session), file);
+        var message = "";
 
-        redirectAttributes.addFlashAttribute("message", "File uploaded successfully!");
+        try {
+            storageService.uploadFile(getCurrentPath(session), file);
+
+            message = "File uploaded successfully!";
+        } catch (MinioException e) {
+            message = "Uploading file error";
+        }
+
+        redirectAttributes.addFlashAttribute("message", message);
 
         return "redirect:/";
     }

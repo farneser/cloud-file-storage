@@ -53,7 +53,7 @@ public class MinioService implements StorageService {
         minioRepository.createFolder(UserUtils.getUserBucket(userId));
     }
 
-    public void uploadFile(String currentPath, MultipartFile file) {
+    public void uploadFile(String currentPath, MultipartFile file) throws MinioException {
         minioRepository.uploadFile(Paths.get(getUserFolderPath(), currentPath).toString(), file);
     }
 

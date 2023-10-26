@@ -15,7 +15,7 @@ public interface StorageService {
 
     void createUserInitialFolder(long userId) throws MinioException;
 
-    void uploadFile(String currentPath, MultipartFile file);
+    void uploadFile(String currentPath, MultipartFile file) throws MinioException;
 
     InputStream download(String fullPath);
 }
