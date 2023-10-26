@@ -19,10 +19,5 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
           cache: maven
-      - name: Build with Maven
-        run: mvn -B package --file pom.xml -Dcheckstyle.skip=true
-      - name: Store artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: Cloud file storage jar build
-          path: target/cloud-file-storage-0.0.1-SNAPSHOT.jar
+      - name: Checkstyle validation
+        run: mvn validate
