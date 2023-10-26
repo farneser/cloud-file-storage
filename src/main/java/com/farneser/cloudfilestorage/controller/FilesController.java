@@ -2,7 +2,6 @@ package com.farneser.cloudfilestorage.controller;
 
 import com.farneser.cloudfilestorage.exception.MinioException;
 import com.farneser.cloudfilestorage.service.StorageService;
-import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,7 +13,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Slf4j
 @Controller
 @RequestMapping("/storage")
-public class FilesController extends BaseController {
+public class FilesController {
     private final StorageService storageService;
 
     public FilesController(StorageService storageService) {
@@ -22,11 +21,11 @@ public class FilesController extends BaseController {
     }
 
     @PostMapping("/file")
-    public String post(@RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes, HttpSession session) {
+    public String post(@RequestParam("file") MultipartFile file, @RequestParam(value = "path", defaultValue = "/") String path, RedirectAttributes redirectAttributes) {
         var message = "";
 
         try {
-            storageService.uploadFile(getCurrentPath(session), file);
+            storageService.uploadFile(path, file);
 
             message = "File uploaded successfully!";
         } catch (MinioException e) {
@@ -35,6 +34,6 @@ public class FilesController extends BaseController {
 
         redirectAttributes.addFlashAttribute("message", message);
 
-        return "redirect:/";
+        return "redirect:/?path=" + path;
     }
 }

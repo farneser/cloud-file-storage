@@ -17,5 +17,5 @@ public interface StorageService {
 
     void uploadFile(String currentPath, MultipartFile file) throws MinioException;
 
-    InputStream download(String fullPath);
+    InputStream download(String fullPath) throws MinioException;
 }

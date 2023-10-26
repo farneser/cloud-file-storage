@@ -67,6 +67,7 @@ public class MinioRepository {
                     .build());
         } catch (Exception e) {
             log.error(e.getMessage());
+
             throw new MinioException(e.getMessage());
         }
     }
@@ -95,7 +96,7 @@ public class MinioRepository {
         }
     }
 
-    public InputStream downloadFile(String fullPath) {
+    public InputStream downloadFile(String fullPath) throws MinioException {
         try {
             return minioClient.getObject(GetObjectArgs
                     .builder()
@@ -103,9 +104,9 @@ public class MinioRepository {
                     .object(fullPath)
                     .build());
         } catch (Exception e) {
-            log.warn(e.getMessage());
-            // FIXME: 10/23/23 no more return null
-            return null;
+            log.error(e.getMessage());
+
+            throw new MinioException("Error while getting file");
         }
     }
 }

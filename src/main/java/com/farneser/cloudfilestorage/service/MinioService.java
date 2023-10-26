@@ -57,7 +57,7 @@ public class MinioService implements StorageService {
         minioRepository.uploadFile(Paths.get(getUserFolderPath(), currentPath).toString(), file);
     }
 
-    public InputStream download(String fullPath) {
+    public InputStream download(String fullPath) throws MinioException {
         return minioRepository.downloadFile(getUserFolderPath() + fullPath);
     }
 
