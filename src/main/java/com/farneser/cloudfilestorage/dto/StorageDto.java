@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
 
 @Data
@@ -16,7 +18,14 @@ public class StorageDto {
 
     public String getItemName() {
         var path = Paths.get(itemPath);
-
         return path.getFileName().toString();
+    }
+
+    public String getValidUrlPath() {
+        return URLEncoder.encode(itemPath, StandardCharsets.UTF_8)
+                .replaceAll("\\+", "%20")
+                .replaceAll("%21", "!")
+                .replaceAll("%23", "#")
+                .replaceAll("%3F", "?");
     }
 }

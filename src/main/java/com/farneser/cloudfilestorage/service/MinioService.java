@@ -1,5 +1,6 @@
 package com.farneser.cloudfilestorage.service;
 
+import com.farneser.cloudfilestorage.dto.FileDto;
 import com.farneser.cloudfilestorage.dto.StorageDto;
 import com.farneser.cloudfilestorage.exception.InternalServerException;
 import com.farneser.cloudfilestorage.exception.MinioException;
@@ -11,7 +12,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.InputStream;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
@@ -57,8 +57,14 @@ public class MinioService implements StorageService {
         minioRepository.uploadFile(Paths.get(getUserFolderPath(), currentPath).toString(), file);
     }
 
-    public InputStream download(String fullPath) throws MinioException {
-        return minioRepository.downloadFile(getUserFolderPath() + fullPath);
+    public FileDto download(String fullPath) throws MinioException {
+        var result = new FileDto();
+
+        result.setFileName(Paths.get(fullPath).getFileName().toString());
+
+        result.setFile(minioRepository.downloadFile(getUserFolderPath() + fullPath));
+
+        return result;
     }
 
     private String getUserFolderPath() {
