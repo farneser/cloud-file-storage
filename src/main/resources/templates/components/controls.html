@@ -10,7 +10,7 @@
 
 <div id="popup">
     <div class="form-container" id="create-folder-form" style="display: none;">
-        <form>
+        <form method="post" enctype="multipart/form-data" action="/storage/folder/create">
             <label for="folderName">Folder Name:</label>
             <input type="text" id="folderName" name="folderName" required>
             <button type="submit">Submit</button>
@@ -18,7 +18,7 @@
     </div>
 
     <div class="form-container" id="post-file-form" style="display: none;">
-        <form>
+        <form method="post" action="/storage/file" enctype="multipart/form-data">
             <label for="file">Select a File:</label>
             <input type="file" id="file" name="file" required>
             <button type="submit">Submit</button>
@@ -26,7 +26,7 @@
     </div>
 
     <div class="form-container" id="post-folder-form" style="display: none;">
-        <form>
+        <form method="post" enctype="multipart/form-data" action="/storage/folder">
             <label for="folder">Folder Name:</label>
             <input type="file" webkitdirectory mozdirectory id="folder" name="folderName" required>
             <button type="submit">Submit</button>
