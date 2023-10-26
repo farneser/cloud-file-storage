@@ -1,6 +1,7 @@
 package com.farneser.cloudfilestorage.controller;
 
 import com.farneser.cloudfilestorage.dto.RegisterDto;
+import com.farneser.cloudfilestorage.exception.MinioException;
 import com.farneser.cloudfilestorage.exception.UserRegistrationException;
 import com.farneser.cloudfilestorage.models.User;
 import com.farneser.cloudfilestorage.service.MinioService;
@@ -47,13 +48,10 @@ public class AuthController {
 
             log.info("created a new user - " + user.toString());
 
-            if (minioService.createUserInitialFolder(user.getId())) {
-                // FIXME: 10/23/23 throw exceptions
-                log.info("created a user bucket - " + user.getId());
-            } else {
-                log.info("failed to crate user bucket - " + user.getId());
-            }
-        } catch (UserRegistrationException e) {
+            minioService.createUserInitialFolder(user.getId());
+
+            log.info("created a user bucket - " + user.getId());
+        } catch (UserRegistrationException | MinioException e) {
             log.info(e.getMessage());
 
             redirectAttributes.addFlashAttribute("message", e.getMessage());

@@ -1,6 +1,7 @@
 package com.farneser.cloudfilestorage.repository;
 
 import com.farneser.cloudfilestorage.exception.InternalServerException;
+import com.farneser.cloudfilestorage.exception.MinioException;
 import io.minio.GetObjectArgs;
 import io.minio.ListObjectsArgs;
 import io.minio.MinioClient;
@@ -55,7 +56,7 @@ public class MinioRepository {
         return result;
     }
 
-    public boolean createFolder(String rawPath) {
+    public void createFolder(String rawPath) throws MinioException {
         var folderPath = prettyFolderPath(rawPath);
 
         try {
@@ -64,12 +65,9 @@ public class MinioRepository {
                     .object(folderPath)
                     .stream(new ByteArrayInputStream(new byte[0]), 0, -1)
                     .build());
-
-            return true;
         } catch (Exception e) {
-            log.warn(e.getMessage());
-            // FIXME: 10/23/23 handle errors
-            return false;
+            log.error(e.getMessage());
+            throw new MinioException(e.getMessage());
         }
     }
 

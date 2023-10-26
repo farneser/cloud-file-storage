@@ -2,6 +2,7 @@ package com.farneser.cloudfilestorage.service;
 
 import com.farneser.cloudfilestorage.dto.StorageDto;
 import com.farneser.cloudfilestorage.exception.InternalServerException;
+import com.farneser.cloudfilestorage.exception.MinioException;
 import com.farneser.cloudfilestorage.models.User;
 import com.farneser.cloudfilestorage.repository.MinioRepository;
 import com.farneser.cloudfilestorage.utils.UserUtils;
@@ -24,7 +25,7 @@ public class MinioService implements StorageService {
         this.minioRepository = minioRepository;
     }
 
-    public void createFolder(String path) {
+    public void createFolder(String path) throws MinioException {
         String fullPath = getUserFolderPath() + path;
         minioRepository.createFolder(fullPath);
     }
@@ -48,8 +49,8 @@ public class MinioService implements StorageService {
         return result;
     }
 
-    public boolean createUserInitialFolder(long userId) {
-        return minioRepository.createFolder(UserUtils.getUserBucket(userId));
+    public void createUserInitialFolder(long userId) throws MinioException {
+        minioRepository.createFolder(UserUtils.getUserBucket(userId));
     }
 
     public void uploadFile(String currentPath, MultipartFile file) {
