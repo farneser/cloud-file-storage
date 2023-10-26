@@ -1,11 +1,10 @@
-package com.farneser.cloudfilestorage.config;
+package com.farneser.cloudfilestorage.config.dev;
 
 import io.minio.BucketExistsArgs;
 import io.minio.MakeBucketArgs;
 import io.minio.MinioClient;
 import io.minio.errors.*;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -15,31 +14,22 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 
 @Slf4j
-@Profile("default")
+@Profile("dev")
 @Configuration
-public class MinioConfig {
-    @Value("${minio.endpoint}")
-    private String endpoint;
-    @Value("${minio.access_key}")
-    private String accessKey;
-    @Value("${minio.secret_key}")
-    private String secretKey;
-    @Value("${minio.bucket}")
-    private String bucket;
-
+public class DevMinioConfig {
     @Bean
     public MinioClient minioClient() {
-        var client = MinioClient.builder().endpoint(endpoint).credentials(accessKey, secretKey).build();
+        var client = MinioClient.builder().endpoint("http://localhost:9000").credentials("youraccesskey", "yoursecretkey").build();
 
         try {
             var found = false;
 
-            found = client.bucketExists(BucketExistsArgs.builder().bucket(bucket).build());
+            found = client.bucketExists(BucketExistsArgs.builder().bucket("user-files").build());
 
             if (!found) {
-                client.makeBucket(MakeBucketArgs.builder().bucket(bucket).build());
+                client.makeBucket(MakeBucketArgs.builder().bucket("user-files").build());
             } else {
-                log.info("Bucket '" + bucket + "' already exists.");
+                log.info("Bucket 'user-files' already exists.");
             }
         } catch (ErrorResponseException | InsufficientDataException | InternalException | InvalidKeyException
                  | InvalidResponseException | IOException | NoSuchAlgorithmException | ServerException
