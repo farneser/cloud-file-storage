@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" type="text/css" href="styles/default.css">
-    <link rel="stylesheet" type="text/css" href="styles/auth.css">
+    <link th:href="@{/styles/default.css}" rel="stylesheet" />
+    <link th:href="@{/styles/auth.css}" rel="stylesheet" />
     <title>Login page</title>
 </head>
 <body>
 <div class="auth-container">
     <h2>Login</h2>
-    <form>
+    <form method="post" th:action="@{/login}">
         <label for="username">Username:</label>
         <input type="text" id="username" name="username" placeholder="Enter your username" required>
 

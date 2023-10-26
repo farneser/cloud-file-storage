@@ -3,23 +3,22 @@
 <head>
     <title>Spring Boot</title>
     <meta charset="utf-8">
-    <link rel="stylesheet" type="text/css" href="styles/default.css">
-    <link rel="stylesheet" type="text/css" href="styles/home.css">
-    <link rel="stylesheet" type="text/css" href="styles/main.css">
+    <link th:href="@{/styles/default.css}" rel="stylesheet"/>
+    <link th:href="@{/styles/home.css}" rel="stylesheet"/>
+    <link th:href="@{/styles/main.css}" rel="stylesheet"/>
 </head>
 <body>
 
-<div th:insert="components/header/header :: copy"></div>
+<div th:replace="components/header"></div>
 
 <main>
-
-    <div th:insert="components/controls/controls :: copy"></div>
+    <div th:replace="components/controls"></div>
 
     <div id="main">
     </div>
 </main>
 
-<div th:insert="components/footer/footer :: copy"></div>
+<div th:replace="components/footer"></div>
 
 </body>
 </html>
