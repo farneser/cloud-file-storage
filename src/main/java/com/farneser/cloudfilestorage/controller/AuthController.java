@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Slf4j
 @Controller
@@ -35,11 +36,12 @@ public class AuthController {
     @GetMapping("/register")
     public String getRegister(Model model) {
         model.addAttribute("user", new RegisterDto());
+
         return "register";
     }
 
     @PostMapping("/register")
-    public String postRegister(@ModelAttribute("user") RegisterDto registerDto) {
+    public String postRegister(@ModelAttribute("user") RegisterDto registerDto, RedirectAttributes redirectAttributes) {
         try {
             var user = userService.registerNewUser(registerDto);
 
@@ -52,7 +54,11 @@ public class AuthController {
                 log.info("failed to crate user bucket - " + user.getId());
             }
         } catch (UserRegistrationException e) {
-            return "register";
+            log.info(e.getMessage());
+
+            redirectAttributes.addFlashAttribute("message", e.getMessage());
+
+            return "redirect:/register";
         }
 
         return "redirect:/login";

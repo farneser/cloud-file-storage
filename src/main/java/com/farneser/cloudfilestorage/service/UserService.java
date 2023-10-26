@@ -25,7 +25,7 @@ public class UserService implements UserDetailsService {
 
     public User registerNewUser(RegisterDto registerDto) throws UserRegistrationException {
         if (userRepository.findByUsername(registerDto.getUsername()) != null) {
-            throw new UserRegistrationException("Username is already taken");
+            throw new UserRegistrationException("Username '" + registerDto.getUsername() + "' is already taken");
         }
 
         if (!registerDto.getPassword().equals(registerDto.getConfirmPassword())) {

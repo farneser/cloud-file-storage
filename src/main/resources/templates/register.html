@@ -9,14 +9,19 @@
 <div class="auth-container">
     <h2>Registration</h2>
     <form method="post" th:action="@{/register}">
+        <!--/*@thymesVar id="message" type="java.lang.String"*/-->
+        <div th:if="${message}">
+            <span th:text="${message}"></span>
+        </div>
+
         <label for="username">Username:</label>
-        <input id="username" name="username" required="required" type="text"/>
+        <input id="username" name="username" required="required" type="text" tabindex="1"/>
 
         <label for="password">Password:</label>
-        <input id="password" name="password" required="required" type="password"/>
+        <input id="password" name="password" required="required" type="password" tabindex="2"/>
 
         <label for="confirmPassword">Confirm password:</label>
-        <input id="confirmPassword" name="confirmPassword" required="required" type="password"/>
+        <input id="confirmPassword" name="confirmPassword" required="required" type="password" tabindex="3"/>
 
         <button type="submit">Register</button>
     </form>
