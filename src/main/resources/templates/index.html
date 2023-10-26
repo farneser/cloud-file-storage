@@ -21,20 +21,28 @@
         </div>
 
         <div th:if="${storageItems != null and storageItems.size() > 0}">
-            <ul>
-                <li th:each="item : ${storageItems}">
+            <ul id="fileList">
+                <li th:each="item : ${storageItems}" th:class="${item.isDir()} ? 'folder' : 'file'">
                     <div th:if="${item.isDir()}">
-                        <a th:href="${'/?path=' + item.getValidUrlPath()}" th:text="${item.getItemName()}"></a>
+                        <a th:href="${'/?path=' + item.getValidUrlPath()}"
+                           th:text="${item.getItemName()}"></a>
                     </div>
+
                     <div th:unless="${item.isDir()}">
-                        <a th:href="${'/storage?path=' + item.getValidUrlPath()}" th:text="${item.getItemName()}"></a>
+                        <span th:text="${item.getItemName()}"></span>
                     </div>
+
+                    <span class="actions">
+                            <a class="download" th:href="${'/storage?path=' + item.getValidUrlPath()}">Download</a>
+                            <a class="rename">Rename</a>
+                            <a class="delete">Delete</a>
+                        </span>
                 </li>
             </ul>
         </div>
 
         <div th:unless="${storageItems != null and storageItems.size() > 0}">
-            <div>Storage items not found</div>
+            <div class="not-found">Storage items not found</div>
         </div>
 
     </div>
