@@ -5,109 +5,21 @@
     <meta charset="utf-8">
     <link rel="stylesheet" type="text/css" href="styles/default.css">
     <link rel="stylesheet" type="text/css" href="styles/home.css">
-    <link rel="stylesheet" type="text/css" href="styles/header.css">
-    <link rel="stylesheet" type="text/css" href="styles/controls.css">
     <link rel="stylesheet" type="text/css" href="styles/main.css">
-    <link rel="stylesheet" type="text/css" href="styles/footer.css">
 </head>
 <body>
 
-<header>
-    <nav>
-        <div>
-            <a href="/">Home</a>
-        </div>
-        <div>
-            <form method="get" action="/search">
-                <label>
-                    <input type="text" placeholder="Search..."/>
-                </label>
-                <input type="submit" hidden/>
-            </form>
-        </div>
-    </nav>
-</header>
+<div th:insert="components/header/header :: copy"></div>
+
 <main>
-    <nav id="controls">
-        <ul>
-            <li id="create-folder">Create Folder</li>
-            <li id="post-file">Post File</li>
-            <li id="post-folder">Post Folder</li>
-        </ul>
-    </nav>
 
-    <div id="popup">
-        <div class="form-container" id="create-folder-form" style="display: none;">
-            <form>
-                <label for="folderName">Folder Name:</label>
-                <input type="text" id="folderName" name="folderName" required>
-                <button type="submit">Submit</button>
-            </form>
-        </div>
+    <div th:insert="components/controls/controls :: copy"></div>
 
-        <div class="form-container" id="post-file-form" style="display: none;">
-            <form>
-                <label for="file">Select a File:</label>
-                <input type="file" id="file" name="file" required>
-                <button type="submit">Submit</button>
-            </form>
-        </div>
-
-        <div class="form-container" id="post-folder-form" style="display: none;">
-            <form>
-                <label for="folder">Folder Name:</label>
-                <input type="file" webkitdirectory mozdirectory id="folder" name="folderName" required>
-                <button type="submit">Submit</button>
-            </form>
-        </div>
-    </div>
     <div id="main">
     </div>
 </main>
-<footer>
-    <nav>
-        <ul>
-            <li>
-                <a href="https://git.farneser.dev/cloud-file-storage">GitHub</a>
-            </li>
-            <li>
-                <a href="https://farneser.t.me">Telegram</a>
-            </li>
-        </ul>
-    </nav>
-</footer>
 
-<script>
-    const popup = document.getElementById("popup");
-
-    function openPopup(formId) {
-        const formContainers = document.querySelectorAll(".form-container");
-        formContainers.forEach((container) => {
-            container.style.display = container.id === formId ? "flex" : "none";
-        });
-
-        popup.style.display = "flex";
-    }
-
-    function closePopup() {
-        popup.style.display = "none";
-    }
-
-    const createFolderBtn = document.getElementById("create-folder");
-    createFolderBtn.addEventListener("click", () => openPopup("create-folder-form"));
-
-    const postFileBtn = document.getElementById("post-file");
-    postFileBtn.addEventListener("click", () => openPopup("post-file-form"));
-
-    const postFolderBtn = document.getElementById("post-folder");
-    postFolderBtn.addEventListener("click", () => openPopup("post-folder-form"));
-
-    popup.addEventListener("click", function (event) {
-        if (event.target === popup) {
-            closePopup();
-        }
-    });
-</script>
+<div th:insert="components/footer/footer :: copy"></div>
 
 </body>
 </html>
