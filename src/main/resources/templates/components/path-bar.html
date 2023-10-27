@@ -1,0 +1,12 @@
+<link rel="stylesheet" th:href="@{/styles/components/path-bar.css}"/>
+
+<div th:if="pathParts != null">
+    <nav class="path-bar">
+        <ul>
+            <!--/*@thymesVar id="pathParts" type="java.util.ArrayList<com.farneser.cloudfilestorage.dto.PathPartDto>"*/-->
+            <li th:each="pathPart : ${pathParts}">
+                <a class="path-link" th:href="${'/?path=' + pathPart.getPath()}" th:text="${pathPart.getLabel()}"></a>
+            </li>
+        </ul>
+    </nav>
+</div>

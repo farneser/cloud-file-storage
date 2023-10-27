@@ -14,15 +14,7 @@
 <main>
     <div th:replace="components/controls"></div>
 
-    <div th:if="pathParts != null">
-        <nav class="path-bar">
-            <ul>
-                <li th:each="pathPart : ${pathParts}">
-                    <a class="path-link" th:href="${'/?path=' + pathPart.getPath()}" th:text="${pathPart.getLabel()}"></a>
-                </li>
-            </ul>
-        </nav>
-    </div>
+    <div th:replace="components/path-bar"></div>
 
     <div id="main">
         <!--/*@thymesVar id="message" type="java.lang.String"*/-->

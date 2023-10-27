@@ -1,0 +1,24 @@
+.path-bar {
+    background-color: #ddd;
+    color: #fff;
+    padding: 10px;
+    margin: 20px 0;
+}
+
+.path-bar ul {
+    list-style: none;
+    padding: 0;
+}
+
+.path-bar li {
+    display: inline;
+}
+
+.path-link {
+    color: #646464;
+}
+
+.path-link:hover {
+    text-decoration: underline;
+    color: #575757;
+}

@@ -57,6 +57,10 @@ public class HomeController {
         result.add(dto);
 
         for (var i = 0; i < pathParts.size(); i++) {
+            if (pathParts.get(i).isEmpty()) {
+                continue;
+            }
+
             result.add(new PathPartDto(pathParts.stream()
                     .limit(i + 1)
                     .collect(Collectors.joining("/")), pathParts.get(i) + "/"));
