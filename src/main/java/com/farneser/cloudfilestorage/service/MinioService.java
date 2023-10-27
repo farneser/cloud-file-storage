@@ -77,11 +77,7 @@ public class MinioService implements StorageService {
 
     @Override
     public void delete(String path) throws MinioException {
-        if (path.endsWith("/")) {
-            minioRepository.deleteFolderRecursive(Paths.get(getUserFolderPath(), path).toString());
-        } else {
-            minioRepository.delete(Paths.get(getUserFolderPath(), path).toString());
-        }
+        minioRepository.deleteFolderRecursive(Paths.get(getUserFolderPath(), path).toString());
     }
 
     private String getUserFolderPath() {
