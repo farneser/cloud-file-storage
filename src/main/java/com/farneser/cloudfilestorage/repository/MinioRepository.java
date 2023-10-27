@@ -2,15 +2,13 @@ package com.farneser.cloudfilestorage.repository;
 
 import com.farneser.cloudfilestorage.exception.InternalServerException;
 import com.farneser.cloudfilestorage.exception.MinioException;
-import io.minio.GetObjectArgs;
-import io.minio.ListObjectsArgs;
-import io.minio.MinioClient;
-import io.minio.PutObjectArgs;
+import io.minio.*;
 import io.minio.errors.*;
 import io.minio.messages.Item;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayInputStream;
@@ -45,9 +43,9 @@ public class MinioRepository {
             for (var item : itemList) {
                 result.add(item.get());
             }
-        } catch (ErrorResponseException | InsufficientDataException | InternalException | InvalidKeyException
-                 | InvalidResponseException | IOException | NoSuchAlgorithmException | ServerException
-                 | XmlParserException e) {
+        } catch (ErrorResponseException | InsufficientDataException | InternalException | InvalidKeyException |
+                 InvalidResponseException | IOException | NoSuchAlgorithmException | ServerException |
+                 XmlParserException e) {
             log.error(e.getMessage());
 
             throw new InternalServerException("Error while reading files in path: " + path + ". Error: " + e.getMessage());
@@ -57,14 +55,48 @@ public class MinioRepository {
     }
 
     public void createFolder(String rawPath) throws MinioException {
-        var folderPath = prettyFolderPath(rawPath);
-
         try {
-            minioClient.putObject(PutObjectArgs.builder()
-                    .bucket(rootBucket)
-                    .object(rawPath)
-                    .stream(new ByteArrayInputStream(new byte[0]), 0, -1)
-                    .build());
+            minioClient.putObject(PutObjectArgs.builder().bucket(rootBucket).object(rawPath).stream(new ByteArrayInputStream(new byte[0]), 0, -1).build());
+        } catch (Exception e) {
+            log.error(e.getMessage());
+
+            throw new MinioException(e.getMessage());
+        }
+    }
+
+    public void delete(String path) throws MinioException {
+        try {
+            minioClient.removeObject(RemoveObjectArgs.builder().bucket(rootBucket).object(path).build());
+        } catch (ErrorResponseException | InsufficientDataException | InternalException | InvalidKeyException |
+                 InvalidResponseException | IOException | NoSuchAlgorithmException | ServerException |
+                 XmlParserException e) {
+            log.error(e.getMessage());
+
+            throw new MinioException(e.getMessage());
+        }
+    }
+
+    public void deleteFolderRecursive(String path) throws MinioException {
+        try {
+            var objects = minioClient.listObjects(ListObjectsArgs.builder().bucket(rootBucket).prefix(path).build());
+
+            for (var result : objects) {
+                var item = result.get();
+                var objectName = item.objectName();
+
+                if (StringUtils.hasText(objectName)) {
+                    if (item.isDir()) {
+                        this.deleteFolderRecursive(objectName);
+                    } else {
+                        this.delete(objectName);
+                        log.info("Deleted object: " + objectName);
+                    }
+                }
+            }
+
+            this.delete(path);
+
+            log.info("Deleted folder: " + path);
         } catch (Exception e) {
             log.error(e.getMessage());
 
@@ -82,12 +114,7 @@ public class MinioRepository {
 
     public void uploadFile(String fullPath, MultipartFile file) throws MinioException {
         try {
-            minioClient.putObject(PutObjectArgs.builder()
-                    .bucket(rootBucket)
-                    .object(Paths.get(fullPath, file.getOriginalFilename()).toString())
-                    .stream(file.getInputStream(), file.getSize(), -1)
-                    .contentType(file.getContentType())
-                    .build());
+            minioClient.putObject(PutObjectArgs.builder().bucket(rootBucket).object(Paths.get(fullPath, file.getOriginalFilename()).toString()).stream(file.getInputStream(), file.getSize(), -1).contentType(file.getContentType()).build());
 
         } catch (Exception e) {
             log.error(e.getMessage());
@@ -98,11 +125,7 @@ public class MinioRepository {
 
     public InputStream downloadFile(String fullPath) throws MinioException {
         try {
-            return minioClient.getObject(GetObjectArgs
-                    .builder()
-                    .bucket(rootBucket)
-                    .object(fullPath)
-                    .build());
+            return minioClient.getObject(GetObjectArgs.builder().bucket(rootBucket).object(fullPath).build());
         } catch (Exception e) {
             log.error(e.getMessage());
 
