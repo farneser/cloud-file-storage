@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="">
+<html lang="en">
 <head>
     <title>Spring Boot</title>
     <meta charset="utf-8">
@@ -35,7 +35,12 @@
                     <span class="actions">
                             <a class="download" th:href="${'/storage?path=' + item.getValidUrlPath()}">Download</a>
                             <a class="rename">Rename</a>
-                            <a class="delete">Delete</a>
+
+                        <form action="/storage/delete" method="post">
+                            <input type="hidden" name="path" th:value="${path}">
+                            <input type="hidden" name="objectName" th:value="${item.getItemPath()}">
+                            <button class="delete" type="submit">Delete</button>
+                        </form>
                         </span>
                 </li>
             </ul>

@@ -75,6 +75,15 @@ public class MinioService implements StorageService {
         return result;
     }
 
+    @Override
+    public void delete(String path) throws MinioException {
+        if (path.endsWith("/")) {
+            minioRepository.deleteFolderRecursive(Paths.get(getUserFolderPath(), path).toString());
+        } else {
+            minioRepository.delete(Paths.get(getUserFolderPath(), path).toString());
+        }
+    }
+
     private String getUserFolderPath() {
         var authentication = SecurityContextHolder.getContext().getAuthentication();
         var userDetails = (User) authentication.getPrincipal();

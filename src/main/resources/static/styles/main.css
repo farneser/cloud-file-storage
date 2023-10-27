@@ -38,7 +38,7 @@ main {
     gap: 10px;
 }
 
-#fileList .actions a {
+#fileList .actions a, #fileList .actions button {
     padding: 5px 10px;
     background-color: #007BFF;
     color: #fff;
@@ -46,7 +46,7 @@ main {
     cursor: pointer;
 }
 
-#fileList .actions a:hover {
+#fileList .actions a:hover, #fileList .actions button:hover {
     background-color: #0056b3;
 }
 

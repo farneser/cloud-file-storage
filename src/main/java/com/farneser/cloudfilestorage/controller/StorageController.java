@@ -74,4 +74,23 @@ public class StorageController {
 
         return "redirect:/?path=" + path;
     }
+
+    @PostMapping("/delete")
+    public String delete(@RequestParam("path") String path, @RequestParam("objectName") String objectName, RedirectAttributes redirectAttributes) {
+        var message = "";
+
+        try {
+            storageService.delete(objectName);
+
+            message = "Object deleted successfully!";
+        } catch (MinioException e) {
+            log.error(e.getMessage());
+            message = "Failed to delete object";
+        }
+
+        redirectAttributes.addFlashAttribute("message", message);
+
+        return "redirect:/?path=" + path;
+    }
+
 }
