@@ -73,8 +73,8 @@ public class MinioRepository {
     public void delete(String path) throws MinioException {
         try {
             minioClient.removeObject(RemoveObjectArgs.builder().bucket(rootBucket).object(path).build());
-        } catch (ErrorResponseException | InsufficientDataException | InternalException | InvalidKeyException |
-                 InvalidResponseException | IOException | NoSuchAlgorithmException | ServerException
+        } catch (ErrorResponseException | InsufficientDataException | InternalException | InvalidKeyException
+                 | InvalidResponseException | IOException | NoSuchAlgorithmException | ServerException
                  | XmlParserException e) {
             log.error(e.getMessage());
 
