@@ -9,7 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 public interface StorageService {
-    void createFolder(String path) throws MinioException;
+    void createFolder(String path, String folderName) throws MinioException;
 
     List<StorageDto> getPathItems(String path) throws InternalServerException;
 

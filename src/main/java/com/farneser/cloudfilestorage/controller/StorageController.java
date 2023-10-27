@@ -41,7 +41,7 @@ public class StorageController {
     }
 
     @PostMapping("/file")
-    public String post(@RequestParam("file") MultipartFile file, @RequestParam(value = "path", defaultValue = "/") String path, RedirectAttributes redirectAttributes) {
+    public String postFile(@RequestParam("file") MultipartFile file, @RequestParam(value = "path", defaultValue = "/") String path, RedirectAttributes redirectAttributes) {
         var message = "";
 
         try {
@@ -50,6 +50,24 @@ public class StorageController {
             message = "File uploaded successfully!";
         } catch (MinioException e) {
             message = "Uploading file error";
+        }
+
+        redirectAttributes.addFlashAttribute("message", message);
+
+        return "redirect:/?path=" + path;
+    }
+
+    @PostMapping("/folder/create")
+    public String createFolder(@RequestParam("path") String path, @RequestParam("folderName") String folderName, RedirectAttributes redirectAttributes) {
+        var message = "";
+
+        try {
+            storageService.createFolder(path, folderName);
+
+            message = "Folder created successfully!";
+        } catch (MinioException e) {
+            log.error(e.getMessage());
+            message = "Failed to create folder";
         }
 
         redirectAttributes.addFlashAttribute("message", message);

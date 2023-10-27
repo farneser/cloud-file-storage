@@ -28,8 +28,8 @@ public class MinioService implements StorageService {
         this.minioRepository = minioRepository;
     }
 
-    public void createFolder(String path) throws MinioException {
-        var fullPath = Paths.get(getUserFolderPath(), path, FOLDER_STATIC_FILE_NAME).toString();
+    public void createFolder(String path, String folderName) throws MinioException {
+        var fullPath = Paths.get(getUserFolderPath(), path, folderName, FOLDER_STATIC_FILE_NAME).toString();
         minioRepository.createFolder(fullPath);
     }
 
