@@ -7,6 +7,7 @@ import com.farneser.cloudfilestorage.exception.MinioException;
 import com.farneser.cloudfilestorage.models.User;
 import com.farneser.cloudfilestorage.repository.MinioRepository;
 import com.farneser.cloudfilestorage.utils.UserUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -16,9 +17,11 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 @Service
 public class MinioService implements StorageService {
     private final MinioRepository minioRepository;
+    private static final String FOLDER_STATIC_FILE_NAME = "folder.ini";
 
     @Autowired
     public MinioService(MinioRepository minioRepository) {
@@ -26,7 +29,7 @@ public class MinioService implements StorageService {
     }
 
     public void createFolder(String path) throws MinioException {
-        String fullPath = getUserFolderPath() + path;
+        var fullPath = Paths.get(getUserFolderPath(), path, FOLDER_STATIC_FILE_NAME).toString();
         minioRepository.createFolder(fullPath);
     }
 
@@ -37,6 +40,11 @@ public class MinioService implements StorageService {
         var result = new ArrayList<StorageDto>();
 
         for (var item : items) {
+
+            if (item.objectName().endsWith(FOLDER_STATIC_FILE_NAME)) {
+                continue;
+            }
+
             var storageDto = new StorageDto();
 
             storageDto.setItemPath(trimFromFirstSlash(item.objectName()));
@@ -50,7 +58,7 @@ public class MinioService implements StorageService {
     }
 
     public void createUserInitialFolder(long userId) throws MinioException {
-        minioRepository.createFolder(UserUtils.getUserBucket(userId));
+        minioRepository.createFolder(Paths.get(UserUtils.getUserBucket(userId), FOLDER_STATIC_FILE_NAME).toString());
     }
 
     public void uploadFile(String currentPath, MultipartFile file) throws MinioException {

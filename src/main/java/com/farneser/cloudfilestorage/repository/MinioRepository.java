@@ -62,7 +62,7 @@ public class MinioRepository {
         try {
             minioClient.putObject(PutObjectArgs.builder()
                     .bucket(rootBucket)
-                    .object(folderPath)
+                    .object(rawPath)
                     .stream(new ByteArrayInputStream(new byte[0]), 0, -1)
                     .build());
         } catch (Exception e) {

@@ -16,7 +16,19 @@ public class StorageDto {
     private String itemPath;
     private boolean isDir;
 
+    public boolean isDir() {
+        if (itemPath.endsWith("/")) {
+            return true;
+        }
+
+        return isDir;
+    }
+
     public String getItemName() {
+        if (itemPath.equals("/")) {
+            return "";
+        }
+
         var path = Paths.get(itemPath);
         return path.getFileName().toString();
     }
