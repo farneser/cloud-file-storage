@@ -38,19 +38,21 @@ main {
     gap: 10px;
 }
 
-#fileList .actions a, #fileList .actions button {
+#fileList .actions .actions-button {
+    display: block;
     padding: 5px 10px;
+    font-size: 100%;
     background-color: #007BFF;
     color: #fff;
     border: none;
     cursor: pointer;
 }
 
-#fileList .actions a:hover, #fileList .actions button:hover {
+#fileList .actions .actions-button:hover {
     background-color: #0056b3;
 }
 
-#fileList li div a, #fileList li span a {
+#fileList .fileList-title, #fileList .actions-button {
     color: inherit;
     text-decoration: none;
 }

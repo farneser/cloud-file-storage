@@ -20,8 +20,8 @@ import java.util.List;
 @Slf4j
 @Service
 public class MinioService implements StorageService {
-    private final MinioRepository minioRepository;
     private static final String FOLDER_STATIC_FILE_NAME = "folder.ini";
+    private final MinioRepository minioRepository;
 
     @Autowired
     public MinioService(MinioRepository minioRepository) {

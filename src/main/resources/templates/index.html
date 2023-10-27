@@ -22,26 +22,30 @@
 
         <div th:if="${storageItems != null and storageItems.size() > 0}">
             <ul id="fileList">
-                <li th:each="item : ${storageItems}" th:class="${item.isDir()} ? 'folder' : 'file'">
+                <li th:class="${item.isDir()} ? 'folder' : 'file'" th:each="item : ${storageItems}">
                     <div th:if="${item.isDir()}">
-                        <a th:href="${'/?path=' + item.getValidUrlPath()}"
+                        <a class="fileList-title" th:href="${'/?path=' + item.getValidUrlPath()}"
                            th:text="${item.getItemName()}"></a>
                     </div>
 
                     <div th:unless="${item.isDir()}">
-                        <span th:text="${item.getItemName()}"></span>
+                        <span class="fileList-title" th:text="${item.getItemName()}"></span>
                     </div>
 
-                    <span class="actions">
-                            <a class="download" th:href="${'/storage?path=' + item.getValidUrlPath()}">Download</a>
-                            <a class="rename">Rename</a>
+                    <div class="actions">
+                        <div>
+                            <a class="actions-button download" th:href="${'/storage?path=' + item.getValidUrlPath()}">Download</a>
+                        </div>
+                        <div>
+                            <a class="actions-button rename" href="#">Rename</a>
+                        </div>
 
                         <form action="/storage/delete" method="post">
-                            <input type="hidden" name="path" th:value="${path}">
-                            <input type="hidden" name="objectName" th:value="${item.getItemPath()}">
-                            <button class="delete" type="submit">Delete</button>
+                            <input name="path" th:value="${path}" type="hidden">
+                            <input name="objectName" th:value="${item.getItemPath()}" type="hidden">
+                            <input class="actions-button delete" type="submit" value="Delete"/>
                         </form>
-                        </span>
+                    </div>
                 </li>
             </ul>
         </div>

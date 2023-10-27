@@ -43,9 +43,9 @@ public class MinioRepository {
             for (var item : itemList) {
                 result.add(item.get());
             }
-        } catch (ErrorResponseException | InsufficientDataException | InternalException | InvalidKeyException |
-                 InvalidResponseException | IOException | NoSuchAlgorithmException | ServerException |
-                 XmlParserException e) {
+        } catch (ErrorResponseException | InsufficientDataException | InternalException | InvalidKeyException
+                 | InvalidResponseException | IOException | NoSuchAlgorithmException | ServerException
+                 | XmlParserException e) {
             log.error(e.getMessage());
 
             throw new InternalServerException("Error while reading files in path: " + path + ". Error: " + e.getMessage());
@@ -56,7 +56,13 @@ public class MinioRepository {
 
     public void createFolder(String rawPath) throws MinioException {
         try {
-            minioClient.putObject(PutObjectArgs.builder().bucket(rootBucket).object(rawPath).stream(new ByteArrayInputStream(new byte[0]), 0, -1).build());
+            minioClient.putObject(PutObjectArgs
+                    .builder()
+                    .bucket(rootBucket)
+                    .object(rawPath)
+                    .stream(new ByteArrayInputStream(new byte[0]), 0, -1)
+                    .build());
+
         } catch (Exception e) {
             log.error(e.getMessage());
 
@@ -68,8 +74,8 @@ public class MinioRepository {
         try {
             minioClient.removeObject(RemoveObjectArgs.builder().bucket(rootBucket).object(path).build());
         } catch (ErrorResponseException | InsufficientDataException | InternalException | InvalidKeyException |
-                 InvalidResponseException | IOException | NoSuchAlgorithmException | ServerException |
-                 XmlParserException e) {
+                 InvalidResponseException | IOException | NoSuchAlgorithmException | ServerException
+                 | XmlParserException e) {
             log.error(e.getMessage());
 
             throw new MinioException(e.getMessage());
@@ -97,6 +103,7 @@ public class MinioRepository {
             this.delete(path);
 
             log.info("Deleted folder: " + path);
+
         } catch (Exception e) {
             log.error(e.getMessage());
 
