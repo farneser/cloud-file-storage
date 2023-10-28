@@ -1,10 +1,8 @@
 package com.farneser.cloudfilestorage.controller;
 
 import com.farneser.cloudfilestorage.dto.RegisterDto;
-import com.farneser.cloudfilestorage.exception.MinioException;
 import com.farneser.cloudfilestorage.exception.UserRegistrationException;
 import com.farneser.cloudfilestorage.models.User;
-import com.farneser.cloudfilestorage.service.MinioService;
 import com.farneser.cloudfilestorage.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,12 +18,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class AuthController {
 
     private final UserService userService;
-    private final MinioService minioService;
 
     @Autowired
-    public AuthController(UserService userService, MinioService minioService) {
+    public AuthController(UserService userService) {
         this.userService = userService;
-        this.minioService = minioService;
     }
 
     @GetMapping("/login")
@@ -48,10 +44,7 @@ public class AuthController {
 
             log.info("created a new user - " + user.toString());
 
-            minioService.createUserInitialFolder(user.getId());
-
-            log.info("created a user bucket - " + user.getId());
-        } catch (UserRegistrationException | MinioException e) {
+        } catch (UserRegistrationException e) {
             log.info(e.getMessage());
 
             redirectAttributes.addFlashAttribute("message", e.getMessage());

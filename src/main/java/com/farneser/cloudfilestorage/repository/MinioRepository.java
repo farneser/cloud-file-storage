@@ -25,7 +25,7 @@ import java.util.List;
 public class MinioRepository {
 
     private final MinioClient minioClient;
-    @Value("${minio.bucket}")
+    @Value("${minio.bucket:user-files}")
     private String rootBucket;
 
     public MinioRepository(MinioClient minioClient) {

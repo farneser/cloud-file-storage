@@ -1,4 +1,4 @@
-package com.farneser.cloudfilestorage.config;
+package com.farneser.cloudfilestorage.config.minio;
 
 import io.minio.BucketExistsArgs;
 import io.minio.MakeBucketArgs;
