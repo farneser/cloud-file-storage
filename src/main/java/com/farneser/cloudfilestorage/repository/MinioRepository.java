@@ -155,6 +155,8 @@ public class MinioRepository {
                 } else {
                     dto.setPath("/");
                 }
+
+                result.add(dto);
             }
 
             return result;
