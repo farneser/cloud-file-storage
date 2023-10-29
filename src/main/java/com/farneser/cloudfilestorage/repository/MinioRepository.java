@@ -9,7 +9,6 @@ import io.minio.messages.Item;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
-import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayInputStream;
@@ -85,20 +84,13 @@ public class MinioRepository {
 
     public void deleteFolderRecursive(String path) throws MinioException {
         try {
-            var objects = minioClient.listObjects(ListObjectsArgs.builder().bucket(rootBucket).prefix(path).build());
+            var objects = minioClient.listObjects(ListObjectsArgs.builder().bucket(rootBucket).recursive(true).prefix(path).build());
 
             for (var result : objects) {
                 var item = result.get();
-                var objectName = item.objectName();
 
-                if (StringUtils.hasText(objectName)) {
-                    if (item.isDir()) {
-                        this.deleteFolderRecursive(objectName);
-                    } else {
-                        this.delete(objectName);
-                        log.info("Deleted object: " + objectName);
-                    }
-                }
+                this.delete(item.objectName());
+                log.info("Deleted object: " + item.objectName());
             }
 
             this.delete(path);
