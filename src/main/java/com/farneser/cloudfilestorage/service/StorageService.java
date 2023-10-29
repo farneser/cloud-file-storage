@@ -2,6 +2,7 @@ package com.farneser.cloudfilestorage.service;
 
 import com.farneser.cloudfilestorage.dto.FileDto;
 import com.farneser.cloudfilestorage.dto.StorageDto;
+import com.farneser.cloudfilestorage.exception.EmptyQueryException;
 import com.farneser.cloudfilestorage.exception.InternalServerException;
 import com.farneser.cloudfilestorage.exception.MinioException;
 import org.springframework.web.multipart.MultipartFile;
@@ -12,6 +13,7 @@ public interface StorageService {
     void createFolder(String path, String folderName) throws MinioException;
 
     List<StorageDto> getPathItems(String path) throws InternalServerException;
+    List<StorageDto> searchItems(String query) throws InternalServerException, EmptyQueryException;
 
     void createUserInitialFolder(long userId) throws MinioException;
 
