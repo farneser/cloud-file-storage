@@ -55,7 +55,6 @@ public class MinioService implements StorageService {
         return MinioUtils.convertItemToStorageDto(items, FOLDER_STATIC_FILE_NAME);
     }
 
-
     public void createUserInitialFolder(long userId) throws MinioException {
         minioRepository.createFolder(Paths.get(UserUtils.getUserBucket(userId), FOLDER_STATIC_FILE_NAME).toString());
     }
