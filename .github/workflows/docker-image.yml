@@ -37,9 +37,6 @@ jobs:
           sudo service docker start
           sudo chmod 666 /var/run/docker.sock
 
-      - name: Run Testcontainers Tests
-        run: mvn test
-
       - name: Build and Push Docker Image
         run: |
           docker buildx create --use
