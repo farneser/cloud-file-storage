@@ -6,6 +6,7 @@ import com.farneser.cloudfilestorage.exception.InternalServerException;
 import com.farneser.cloudfilestorage.exception.MinioException;
 import com.farneser.cloudfilestorage.models.User;
 import com.farneser.cloudfilestorage.repository.MinioRepository;
+import com.farneser.cloudfilestorage.utils.InputStreamUtils;
 import com.farneser.cloudfilestorage.utils.UserUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
@@ -65,12 +67,20 @@ public class MinioService implements StorageService {
         minioRepository.uploadFile(Paths.get(getUserFolderPath(), currentPath).toString(), file);
     }
 
-    public FileDto download(String fullPath) throws MinioException {
+    public FileDto download(String fullPath) throws MinioException, InternalServerException {
         var result = new FileDto();
 
-        result.setFileName(Paths.get(fullPath).getFileName().toString());
+        result.setFileName(Paths.get(fullPath).getFileName().toString() + ".zip");
 
-        result.setFile(minioRepository.downloadFile(getUserFolderPath() + fullPath));
+        try {
+            result.setFile(InputStreamUtils.compressToZip(minioRepository.download(Paths.get(getUserFolderPath(), fullPath).toString())));
+        } catch (IOException e) {
+            log.error(e.getMessage());
+
+            throw new InternalServerException("Failed to get files");
+        }
+
+        result.setPath("/");
 
         return result;
     }
