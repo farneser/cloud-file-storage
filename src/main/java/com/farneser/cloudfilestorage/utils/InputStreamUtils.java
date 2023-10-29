@@ -4,6 +4,7 @@ import com.farneser.cloudfilestorage.dto.FileDto;
 import com.farneser.cloudfilestorage.exception.InternalServerException;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.zip.ZipEntry;
@@ -18,7 +19,7 @@ public class InputStreamUtils {
 
         var byteArrayOutputStream = new ByteArrayOutputStream();
 
-        var zipOutputStream = new ZipOutputStream(byteArrayOutputStream);
+        var zipOutputStream = new ZipOutputStream(byteArrayOutputStream, StandardCharsets.UTF_8);
 
         for (FileDto fileDto : fileDtoList) {
             var entryPath = Paths.get(fileDto.getPath(), fileDto.getFileName()).toString();
