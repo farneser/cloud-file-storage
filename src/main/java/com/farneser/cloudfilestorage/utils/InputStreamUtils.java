@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-public class InputStreamUtils {
+public abstract class InputStreamUtils {
 
     public static InputStream compressToZip(List<FileDto> fileDtoList) throws IOException, InternalServerException {
         if (fileDtoList == null || fileDtoList.isEmpty()) {
