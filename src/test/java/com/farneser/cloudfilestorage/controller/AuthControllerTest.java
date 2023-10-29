@@ -1,6 +1,7 @@
 package com.farneser.cloudfilestorage.controller;
 
 import com.farneser.cloudfilestorage.dto.RegisterDto;
+import com.farneser.cloudfilestorage.exception.UserRegistrationException;
 import com.farneser.cloudfilestorage.models.User;
 import com.farneser.cloudfilestorage.repository.UserRepository;
 import com.farneser.cloudfilestorage.service.UserService;
@@ -17,6 +18,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -55,6 +57,28 @@ public class AuthControllerTest {
                         .param("confirmPassword", "testuser")
                 )
                 .andExpect(MockMvcResultMatchers.status().is3xxRedirection())
+                .andExpect(redirectedUrl("/login"))
+                .andDo(MockMvcResultHandlers.print());
+    }
+
+    @Test
+    public void testRegisterExistingUser() throws Exception {
+        var registerDto = new RegisterDto();
+
+        registerDto.setUsername("testuser");
+        registerDto.setPassword("testuser");
+        registerDto.setConfirmPassword("testuser");
+
+        when(userService.registerNewUser(registerDto)).thenThrow(new UserRegistrationException("failed"));
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/register")
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                        .param("username", "testuser")
+                        .param("password", "testuser")
+                        .param("confirmPassword", "testuser")
+                )
+                .andExpect(MockMvcResultMatchers.status().is3xxRedirection())
+                .andExpect(redirectedUrl("/register"))
                 .andDo(MockMvcResultHandlers.print());
     }
 }
