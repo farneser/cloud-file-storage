@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Slf4j
 @Controller
@@ -24,7 +25,7 @@ public class SearchController {
     }
 
     @GetMapping
-    public String getPage(Model model, @RequestParam(value = "query") String path) {
+    public String getPage(Model model, @RequestParam(value = "query") String path, RedirectAttributes redirectAttributes) {
         try {
             var items = storageService.searchItems(path);
 
@@ -32,6 +33,7 @@ public class SearchController {
 
         } catch (InternalServerException | EmptyQueryException e) {
             log.error(e.getMessage());
+            redirectAttributes.addAttribute("message", e.getMessage());
         }
 
         model.addAttribute("path", path);

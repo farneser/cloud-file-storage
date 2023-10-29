@@ -49,7 +49,10 @@ public class StorageController {
     }
 
     @PostMapping("/file")
-    public String postFile(@RequestParam("file") MultipartFile file, @RequestParam(value = "path", defaultValue = "/") String path, RedirectAttributes redirectAttributes) {
+    public String postFile(
+            @RequestParam("file") MultipartFile file,
+            @RequestParam(value = "path", defaultValue = "/") String path,
+            RedirectAttributes redirectAttributes) {
         var message = "";
 
         try {
@@ -66,7 +69,10 @@ public class StorageController {
     }
 
     @PostMapping("/folder")
-    public String postFolder(@RequestParam("folder") MultipartFile[] folder, @RequestParam(value = "path", defaultValue = "/") String path, RedirectAttributes redirectAttributes) {
+    public String postFolder(
+            @RequestParam("folder") MultipartFile[] folder,
+            @RequestParam(value = "path", defaultValue = "/") String path,
+            RedirectAttributes redirectAttributes) {
 
         var message = "";
 
@@ -86,7 +92,10 @@ public class StorageController {
     }
 
     @PostMapping("/folder/create")
-    public String createFolder(@RequestParam("path") String path, @RequestParam("folderName") String folderName, RedirectAttributes redirectAttributes) {
+    public String createFolder(
+            @RequestParam("path") String path,
+            @RequestParam("folderName") String folderName,
+            RedirectAttributes redirectAttributes) {
         var message = "";
 
         try {
@@ -104,7 +113,10 @@ public class StorageController {
     }
 
     @PostMapping("/delete")
-    public String delete(@RequestParam("path") String path, @RequestParam("objectName") String objectName, RedirectAttributes redirectAttributes) {
+    public String delete(
+            @RequestParam("path") String path,
+            @RequestParam("objectName") String objectName,
+            RedirectAttributes redirectAttributes) {
         var message = "";
 
         try {
