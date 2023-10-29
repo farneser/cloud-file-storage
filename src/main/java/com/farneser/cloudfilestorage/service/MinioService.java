@@ -73,7 +73,17 @@ public class MinioService implements StorageService {
         result.setFileName(Paths.get(fullPath).getFileName().toString() + ".zip");
 
         try {
-            result.setFile(InputStreamUtils.compressToZip(minioRepository.download(Paths.get(getUserFolderPath(), fullPath).toString())));
+            var files = minioRepository.download(Paths.get(getUserFolderPath(), fullPath).toString());
+
+            var filteredFiles = new ArrayList<FileDto>();
+
+            for (var file : files) {
+                if (!FOLDER_STATIC_FILE_NAME.equals(file.getFileName())) {
+                    filteredFiles.add(file);
+                }
+            }
+
+            result.setFile(InputStreamUtils.compressToZip(filteredFiles));
         } catch (IOException e) {
             log.error(e.getMessage());
 
