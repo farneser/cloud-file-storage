@@ -2,11 +2,13 @@ package com.farneser.cloudfilestorage.service;
 
 import com.farneser.cloudfilestorage.dto.FileDto;
 import com.farneser.cloudfilestorage.dto.StorageDto;
+import com.farneser.cloudfilestorage.exception.EmptyQueryException;
 import com.farneser.cloudfilestorage.exception.InternalServerException;
 import com.farneser.cloudfilestorage.exception.MinioException;
 import com.farneser.cloudfilestorage.models.User;
 import com.farneser.cloudfilestorage.repository.MinioRepository;
 import com.farneser.cloudfilestorage.utils.InputStreamUtils;
+import com.farneser.cloudfilestorage.utils.MinioUtils;
 import com.farneser.cloudfilestorage.utils.UserUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +18,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -39,24 +40,19 @@ public class MinioService implements StorageService {
     public List<StorageDto> getPathItems(String path) throws InternalServerException {
         var items = minioRepository.getPathItems(Paths.get(getUserFolderPath(), path).toString());
 
-        var result = new ArrayList<StorageDto>();
+        return MinioUtils.convertItemToStorageDto(items, FOLDER_STATIC_FILE_NAME);
+    }
 
-        for (var item : items) {
+    @Override
+    public List<StorageDto> searchItems(String query) throws InternalServerException, EmptyQueryException {
 
-            if (item.objectName().endsWith(FOLDER_STATIC_FILE_NAME)) {
-                continue;
-            }
-
-            var storageDto = new StorageDto();
-
-            storageDto.setItemPath(trimFromFirstSlash(item.objectName()));
-
-            storageDto.setDir(item.isDir());
-
-            result.add(storageDto);
+        if (query == null || query.isEmpty() || query.equals("/")) {
+            throw new EmptyQueryException("query: " + query + " is empty");
         }
 
-        return result;
+        var items = minioRepository.search(getUserFolderPath(), query);
+
+        return MinioUtils.convertItemToStorageDto(items, FOLDER_STATIC_FILE_NAME);
     }
 
     public void createUserInitialFolder(long userId) throws MinioException {
@@ -107,15 +103,5 @@ public class MinioService implements StorageService {
         var userDetails = (User) authentication.getPrincipal();
 
         return UserUtils.getUserBucket(userDetails.getId());
-    }
-
-    private String trimFromFirstSlash(String path) {
-        var slashIndex = path.indexOf('/');
-
-        if (slashIndex != -1) {
-            return path.substring(slashIndex);
-        }
-
-        return path;
     }
 }

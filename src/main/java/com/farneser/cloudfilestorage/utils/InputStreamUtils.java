@@ -3,14 +3,17 @@ package com.farneser.cloudfilestorage.utils;
 import com.farneser.cloudfilestorage.dto.FileDto;
 import com.farneser.cloudfilestorage.exception.InternalServerException;
 
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-public class InputStreamUtils {
+public abstract class InputStreamUtils {
 
     public static InputStream compressToZip(List<FileDto> fileDtoList) throws IOException, InternalServerException {
         if (fileDtoList == null || fileDtoList.isEmpty()) {

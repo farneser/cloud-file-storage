@@ -167,4 +167,22 @@ public class MinioRepository {
             throw new MinioException("Error while getting file");
         }
     }
+
+    public List<Item> search(String userFolderPath, String query) throws InternalServerException {
+        var result = new ArrayList<Item>();
+
+        var itemList = minioClient.listObjects(ListObjectsArgs.builder().bucket(rootBucket).prefix(userFolderPath).recursive(true).build());
+
+        try {
+            for (var item : itemList) {
+                if (item.get().objectName().contains(query)) {
+                    result.add(item.get());
+                }
+            }
+        } catch (Exception e) {
+            throw new InternalServerException("failed to search query");
+        }
+
+        return result;
+    }
 }
