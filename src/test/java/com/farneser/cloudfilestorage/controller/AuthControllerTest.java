@@ -3,7 +3,6 @@ package com.farneser.cloudfilestorage.controller;
 import com.farneser.cloudfilestorage.dto.RegisterDto;
 import com.farneser.cloudfilestorage.exception.UserRegistrationException;
 import com.farneser.cloudfilestorage.models.User;
-import com.farneser.cloudfilestorage.repository.UserRepository;
 import com.farneser.cloudfilestorage.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -28,9 +27,6 @@ public class AuthControllerTest {
 
     @MockBean
     private UserService userService;
-
-    @MockBean
-    private UserRepository userRepository;
 
     @BeforeEach
     public void setup() {
@@ -76,6 +72,27 @@ public class AuthControllerTest {
                         .param("username", "testuser")
                         .param("password", "testuser")
                         .param("confirmPassword", "testuser")
+                )
+                .andExpect(MockMvcResultMatchers.status().is3xxRedirection())
+                .andExpect(redirectedUrl("/register"))
+                .andDo(MockMvcResultHandlers.print());
+    }
+
+    @Test
+    public void testRegisterPasswordsNotMatch() throws Exception {
+        var registerDto = new RegisterDto();
+
+        registerDto.setUsername("testuser");
+        registerDto.setPassword("testuser");
+        registerDto.setConfirmPassword("testuser1");
+
+        when(userService.registerNewUser(registerDto)).thenThrow(new UserRegistrationException("failed"));
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/register")
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                        .param("username", "testuser")
+                        .param("password", "testuser")
+                        .param("confirmPassword", "testuser1")
                 )
                 .andExpect(MockMvcResultMatchers.status().is3xxRedirection())
                 .andExpect(redirectedUrl("/register"))
