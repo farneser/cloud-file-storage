@@ -75,15 +75,17 @@ public class MinioService implements StorageService {
         try {
             var files = minioRepository.download(Paths.get(getUserFolderPath(), fullPath).toString());
 
-            var filteredFiles = new ArrayList<FileDto>();
+            // here I decided to leave the folder.ini files for download in order to preserve the folder structure
 
-            for (var file : files) {
-                if (!FOLDER_STATIC_FILE_NAME.equals(file.getFileName())) {
-                    filteredFiles.add(file);
-                }
+            if (files.isEmpty()) {
+                throw new InternalServerException("Not found");
             }
 
-            result.setFile(InputStreamUtils.compressToZip(filteredFiles));
+            if (files.size() == 1 && !files.get(0).getFileName().equals(FOLDER_STATIC_FILE_NAME)) {
+                return files.get(0);
+            }
+
+            result.setFile(InputStreamUtils.compressToZip(files));
         } catch (IOException e) {
             log.error(e.getMessage());
 

@@ -42,6 +42,8 @@ public class StorageController {
                     .headers(headers)
                     .body(new InputStreamResource(fileDto.getFile()));
         } catch (MinioException | InternalServerException e) {
+            log.error(e.getMessage());
+
             return ResponseEntity.status(500).body(null);
         }
     }
