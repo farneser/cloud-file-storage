@@ -1,5 +1,6 @@
 package com.farneser.cloudfilestorage.repository;
 
+import com.farneser.cloudfilestorage.dto.FileDto;
 import com.farneser.cloudfilestorage.exception.InternalServerException;
 import com.farneser.cloudfilestorage.exception.MinioException;
 import io.minio.*;
@@ -8,7 +9,6 @@ import io.minio.messages.Item;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
-import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayInputStream;
@@ -84,20 +84,13 @@ public class MinioRepository {
 
     public void deleteFolderRecursive(String path) throws MinioException {
         try {
-            var objects = minioClient.listObjects(ListObjectsArgs.builder().bucket(rootBucket).prefix(path).build());
+            var objects = minioClient.listObjects(ListObjectsArgs.builder().bucket(rootBucket).recursive(true).prefix(path).build());
 
             for (var result : objects) {
                 var item = result.get();
-                var objectName = item.objectName();
 
-                if (StringUtils.hasText(objectName)) {
-                    if (item.isDir()) {
-                        this.deleteFolderRecursive(objectName);
-                    } else {
-                        this.delete(objectName);
-                        log.info("Deleted object: " + objectName);
-                    }
-                }
+                this.delete(item.objectName());
+                log.info("Deleted object: " + item.objectName());
             }
 
             this.delete(path);
@@ -133,6 +126,41 @@ public class MinioRepository {
     public InputStream downloadFile(String fullPath) throws MinioException {
         try {
             return minioClient.getObject(GetObjectArgs.builder().bucket(rootBucket).object(fullPath).build());
+        } catch (Exception e) {
+            log.error(e.getMessage());
+
+            throw new MinioException("Error while getting file");
+        }
+    }
+
+    public List<FileDto> download(String fullPath) throws MinioException {
+        var result = new ArrayList<FileDto>();
+
+        try {
+            var files = minioClient.listObjects(ListObjectsArgs.builder().bucket(rootBucket).prefix(fullPath).recursive(true).build());
+
+            for (var file : files) {
+                var dto = new FileDto();
+
+                dto.setFile(downloadFile(file.get().objectName()));
+
+                dto.setFileName(Paths.get(file.get().objectName()).getFileName().toString());
+
+                var slashIndex = file.get().objectName().indexOf("/");
+
+                if (slashIndex != -1) {
+                    var substring = file.get().objectName().substring(slashIndex);
+
+                    dto.setPath(Paths.get(substring).getParent().toString());
+                } else {
+                    dto.setPath("/");
+                }
+
+                result.add(dto);
+            }
+
+            return result;
+
         } catch (Exception e) {
             log.error(e.getMessage());
 

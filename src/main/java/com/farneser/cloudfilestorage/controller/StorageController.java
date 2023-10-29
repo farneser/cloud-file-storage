@@ -1,5 +1,6 @@
 package com.farneser.cloudfilestorage.controller;
 
+import com.farneser.cloudfilestorage.exception.InternalServerException;
 import com.farneser.cloudfilestorage.exception.MinioException;
 import com.farneser.cloudfilestorage.service.StorageService;
 import lombok.extern.slf4j.Slf4j;
@@ -13,6 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 
 @Slf4j
 @Controller
@@ -30,12 +34,16 @@ public class StorageController {
             var fileDto = storageService.download(path);
             var headers = new HttpHeaders();
 
-            headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + fileDto.getFileName());
+            var encodedFileName = URLEncoder.encode(fileDto.getFileName(), StandardCharsets.UTF_8);
+
+            headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + encodedFileName + "\"");
 
             return ResponseEntity.ok()
                     .headers(headers)
                     .body(new InputStreamResource(fileDto.getFile()));
-        } catch (MinioException e) {
+        } catch (MinioException | InternalServerException e) {
+            log.error(e.getMessage());
+
             return ResponseEntity.status(500).body(null);
         }
     }
@@ -50,6 +58,26 @@ public class StorageController {
             message = "File uploaded successfully!";
         } catch (MinioException e) {
             message = "Uploading file error";
+        }
+
+        redirectAttributes.addFlashAttribute("message", message);
+
+        return "redirect:/?path=" + path;
+    }
+
+    @PostMapping("/folder")
+    public String postFolder(@RequestParam("folder") MultipartFile[] folder, @RequestParam(value = "path", defaultValue = "/") String path, RedirectAttributes redirectAttributes) {
+
+        var message = "";
+
+        try {
+            for (var file : folder) {
+                storageService.uploadFile(path, file);
+            }
+
+            message = "Folder uploaded successfully!";
+        } catch (MinioException e) {
+            message = "Uploading folder error";
         }
 
         redirectAttributes.addFlashAttribute("message", message);

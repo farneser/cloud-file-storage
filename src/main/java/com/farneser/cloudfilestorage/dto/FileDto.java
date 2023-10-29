@@ -13,4 +13,5 @@ public class FileDto {
 
     private InputStream file;
     private String fileName;
+    private String path;
 }
