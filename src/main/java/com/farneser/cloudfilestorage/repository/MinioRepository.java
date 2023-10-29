@@ -1,5 +1,6 @@
 package com.farneser.cloudfilestorage.repository;
 
+import com.farneser.cloudfilestorage.dto.FileDto;
 import com.farneser.cloudfilestorage.exception.InternalServerException;
 import com.farneser.cloudfilestorage.exception.MinioException;
 import io.minio.*;
@@ -133,6 +134,39 @@ public class MinioRepository {
     public InputStream downloadFile(String fullPath) throws MinioException {
         try {
             return minioClient.getObject(GetObjectArgs.builder().bucket(rootBucket).object(fullPath).build());
+        } catch (Exception e) {
+            log.error(e.getMessage());
+
+            throw new MinioException("Error while getting file");
+        }
+    }
+
+    public List<FileDto> download(String fullPath) throws MinioException {
+        var result = new ArrayList<FileDto>();
+
+        try {
+            var files = minioClient.listObjects(ListObjectsArgs.builder().bucket(rootBucket).prefix(fullPath).recursive(true).build());
+
+            for (var file : files) {
+                var dto = new FileDto();
+
+                dto.setFile(downloadFile(file.get().objectName()));
+
+                dto.setFileName(Paths.get(file.get().objectName()).getFileName().toString());
+
+                var slashIndex = file.get().objectName().indexOf("/");
+
+                if (slashIndex != -1) {
+                    var substring = file.get().objectName().substring(slashIndex);
+
+                    dto.setPath(Paths.get(substring).getParent().toString());
+                } else {
+                    dto.setPath("/");
+                }
+            }
+
+            return result;
+
         } catch (Exception e) {
             log.error(e.getMessage());
 
