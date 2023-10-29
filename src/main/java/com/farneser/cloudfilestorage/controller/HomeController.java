@@ -24,24 +24,6 @@ public class HomeController {
         this.storageService = storageService;
     }
 
-    @GetMapping()
-    public String home(Model model, @RequestParam(value = "path", defaultValue = "/") String path) {
-
-        try {
-            var items = storageService.getPathItems(path);
-
-            model.addAttribute("storageItems", items);
-
-        } catch (InternalServerException e) {
-            log.error(e.getMessage());
-        }
-
-        model.addAttribute("path", path);
-        model.addAttribute("pathParts", getPath(path));
-
-        return "index";
-    }
-
     public static List<PathPartDto> getPath(String path) {
 
         if (path.startsWith("/")) {
@@ -67,5 +49,23 @@ public class HomeController {
         }
 
         return result;
+    }
+
+    @GetMapping()
+    public String home(Model model, @RequestParam(value = "path", defaultValue = "/") String path) {
+
+        try {
+            var items = storageService.getPathItems(path);
+
+            model.addAttribute("storageItems", items);
+
+        } catch (InternalServerException e) {
+            log.error(e.getMessage());
+        }
+
+        model.addAttribute("path", path);
+        model.addAttribute("pathParts", getPath(path));
+
+        return "index";
     }
 }
