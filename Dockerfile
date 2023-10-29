@@ -14,7 +14,7 @@ ENV POSTGRES_PASSWORD ${POSTGRES_PASSWORD}
 ENV REDIS_HOST ${REDIS_HOST}
 ENV REDIS_PORT ${REDIS_PORT}
 
-RUN mvn -f /app/pom.xml clean package -Dcheckstyle.skip=true -DskipTests
+RUN mvn -f /app/pom.xml clean package -Dcheckstyle.skip=true
 
 FROM eclipse-temurin:17
 

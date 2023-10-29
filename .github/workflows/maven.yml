@@ -1,4 +1,4 @@
-name: Java CI with Maven and Testcontainers
+name: Maven build
 
 on:
   push:
