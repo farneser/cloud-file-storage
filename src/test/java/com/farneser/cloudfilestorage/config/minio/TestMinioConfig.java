@@ -26,7 +26,7 @@ public class TestMinioConfig {
                 .withEnv("MINIO_ROOT_PASSWORD", "yoursecretkey")
                 .withCommand("server", "/data")
                 .withCreateContainerCmdModifier(cmd -> cmd.withHostConfig(
-                        new HostConfig().withPortBindings(new PortBinding(Ports.Binding.bindPort(9000), new ExposedPort(9000)))));
+                        new HostConfig().withPortBindings(new PortBinding(Ports.Binding.bindPort(19191), new ExposedPort(9000)))));
 
         minioContainer.start();
 
@@ -40,7 +40,7 @@ public class TestMinioConfig {
     public MinioClient minioClient() {
         var client = MinioClient
                 .builder()
-                .endpoint("http://localhost:9000")
+                .endpoint("http://localhost:19191")
                 .credentials("youraccesskey", "yoursecretkey")
                 .build();
 
