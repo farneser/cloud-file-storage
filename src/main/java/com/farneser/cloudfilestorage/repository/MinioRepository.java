@@ -185,4 +185,29 @@ public class MinioRepository {
 
         return result;
     }
+
+    public void rename(String path, String newName) throws InternalServerException {
+
+        try {
+            minioClient.copyObject(CopyObjectArgs.builder()
+                    .source(CopySource.builder().bucket(rootBucket).object(path).build())
+                    .bucket(rootBucket)
+                    .object(newName)
+                    .build());
+
+
+            minioClient.removeObject(RemoveObjectArgs.builder()
+                    .bucket(rootBucket)
+                    .object(path)
+                    .build());
+
+            System.out.println("Object renamed successfully");
+
+        } catch (Exception e) {
+            log.error(e.getMessage());
+
+            throw new InternalServerException(e.getMessage());
+        }
+
+    }
 }
