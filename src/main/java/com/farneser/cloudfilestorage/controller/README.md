@@ -48,12 +48,25 @@ GET Параметры
 ## /storage
 
 Эндпоинт загрузки файлов
+Файлы загружаются в исходном виде, а пипки в виде архива
 
 GET Параметры
 
 | Параметр | Тип    |
 |----------|--------|
 | path     | string |
+
+## /storage/rename
+
+Эндпоинт загрузки файлов на сервер
+
+POST Параметры
+
+| Параметр   | Тип    |
+|------------|--------|
+| path       | string |
+| objectPath | string |
+| newName    | string |
 
 ## /storage/file
 
@@ -65,3 +78,36 @@ POST Параметры (multipart/form-data)
 |----------|---------------|
 | path     | string        |
 | file     | MultipartFile |
+
+## /storage/folder
+
+Эндпоинт загрузки папки на сервер
+
+POST Параметры (multipart/form-data)
+
+| Параметр | Тип             |
+|----------|-----------------|
+| path     | string          |
+| folder   | MultipartFile[] |
+
+## /storage/folder/create
+
+Эндпоинт создания пустой папки
+
+POST Параметры
+
+| Параметр   | Тип    |
+|------------|--------|
+| path       | string |
+| folderName | string |
+
+## /storage/delete
+
+Эндпоинт удаления объекта
+
+POST Параметры
+
+| Параметр   | Тип    |
+|------------|--------|
+| path       | string |
+| objectName | string |
