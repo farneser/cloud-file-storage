@@ -10,6 +10,12 @@ function openPopup(formId) {
     controlsPopup.style.display = "flex";
 }
 
+function currentRename(button){
+    document.getElementById("renamePath").value = button.value;
+
+    openPopup("rename-object-form")
+}
+
 function closePopup() {
     controlsPopup.style.display = "none";
 }

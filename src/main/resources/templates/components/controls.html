@@ -8,36 +8,4 @@
     </ul>
 </nav>
 
-<div id="popup">
-    <div class="form-container" id="create-folder-form" style="display: none;">
-        <form action="/storage/folder/create" enctype="multipart/form-data" method="post">
-            <label for="folderName">Folder Name:</label>
-            <!--/*@thymesVar id="path" type="java.lang.String"*/-->
-            <input name="path" th:value="${path}" type="hidden">
-            <input id="folderName" name="folderName" required type="text">
-            <button type="submit">Submit</button>
-        </form>
-    </div>
-
-    <div class="form-container" id="post-file-form" style="display: none;">
-        <form action="/storage/file" enctype="multipart/form-data" method="post">
-            <label for="file">Select a File:</label>
-            <!--/*@thymesVar id="path" type="java.lang.String"*/-->
-            <input name="path" th:value="${path}" type="hidden">
-            <input id="file" name="file" required type="file">
-            <button type="submit">Submit</button>
-        </form>
-    </div>
-
-    <div class="form-container" id="post-folder-form" style="display: none;">
-        <form action="/storage/folder" enctype="multipart/form-data" method="post">
-            <label for="folder">Folder Name:</label>
-            <!--/*@thymesVar id="path" type="java.lang.String"*/-->
-            <input name="path" th:value="${path}" type="hidden">
-            <input id="folder" mozdirectory name="folder" required type="file" webkitdirectory>
-            <button type="submit">Submit</button>
-        </form>
-    </div>
-</div>
-
-<script th:src="@{/scripts/components/controls.js}"></script>
+<div th:replace="~{components/popup}"></div>

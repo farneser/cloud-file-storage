@@ -23,4 +23,6 @@ public interface StorageService {
     FileDto download(String fullPath) throws MinioException, InternalServerException;
 
     void delete(String path) throws MinioException;
+
+    void rename(String path, String newName) throws InternalServerException;
 }

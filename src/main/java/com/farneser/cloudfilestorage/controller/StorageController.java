@@ -48,6 +48,29 @@ public class StorageController {
         }
     }
 
+    @PostMapping("/rename")
+    public String rename(
+            @RequestParam("path") String path,
+            @RequestParam("objectPath") String objectPath,
+            @RequestParam("newName") String newName,
+            RedirectAttributes redirectAttributes) {
+        var message = "";
+
+        try {
+            storageService.rename(objectPath, newName);
+
+            message = "Object renamed successfully!";
+        } catch (InternalServerException e) {
+
+            log.error(e.getMessage());
+            message = "Failed to rename object";
+        }
+
+        redirectAttributes.addFlashAttribute("message", message);
+
+        return "redirect:/?path=" + path;
+    }
+
     @PostMapping("/file")
     public String postFile(
             @RequestParam("file") MultipartFile file,

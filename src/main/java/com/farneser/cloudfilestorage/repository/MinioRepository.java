@@ -43,6 +43,7 @@ public class MinioRepository {
             for (var item : itemList) {
                 result.add(item.get());
             }
+            log.info("Found " + result.size() + " objects");
         } catch (ErrorResponseException | InsufficientDataException | InternalException | InvalidKeyException
                  | InvalidResponseException | IOException | NoSuchAlgorithmException | ServerException
                  | XmlParserException e) {
@@ -62,7 +63,7 @@ public class MinioRepository {
                     .object(rawPath)
                     .stream(new ByteArrayInputStream(new byte[0]), 0, -1)
                     .build());
-
+            log.info("Created folder: " + rawPath);
         } catch (Exception e) {
             log.error(e.getMessage());
 
@@ -73,6 +74,7 @@ public class MinioRepository {
     public void delete(String path) throws MinioException {
         try {
             minioClient.removeObject(RemoveObjectArgs.builder().bucket(rootBucket).object(path).build());
+            log.info("Deleted object: " + path);
         } catch (ErrorResponseException | InsufficientDataException | InternalException | InvalidKeyException
                  | InvalidResponseException | IOException | NoSuchAlgorithmException | ServerException
                  | XmlParserException e) {
@@ -116,6 +118,7 @@ public class MinioRepository {
         try {
             minioClient.putObject(PutObjectArgs.builder().bucket(rootBucket).object(Paths.get(fullPath, file.getOriginalFilename()).toString()).stream(file.getInputStream(), file.getSize(), -1).contentType(file.getContentType()).build());
 
+            log.info("Uploaded file: " + file.getOriginalFilename());
         } catch (Exception e) {
             log.error(e.getMessage());
 
@@ -157,6 +160,8 @@ public class MinioRepository {
                 }
 
                 result.add(dto);
+
+                log.info("Downloaded file: " + file.get().objectName());
             }
 
             return result;
@@ -179,10 +184,58 @@ public class MinioRepository {
                     result.add(item.get());
                 }
             }
+
+            log.info("Found " + result.size() + " objects");
         } catch (Exception e) {
             throw new InternalServerException("failed to search query");
         }
 
         return result;
+    }
+
+    public void rename(String path, String newName) throws InternalServerException {
+
+        try {
+
+            var originalPath = Paths.get(path);
+
+            var newPath = originalPath.resolveSibling(newName);
+
+            var items = minioClient.listObjects(ListObjectsArgs.builder().bucket(rootBucket).prefix(path).recursive(true).build());
+
+            items.forEach(item -> {
+                try {
+                    var newObjectPath = item.get().objectName().replace(originalPath.toString(), newPath.toString());
+
+                    minioClient.copyObject(CopyObjectArgs.builder()
+                            .source(CopySource.builder().bucket(rootBucket).object(item.get().objectName()).build())
+                            .bucket(rootBucket)
+                            .object(newObjectPath)
+                            .build());
+
+                    log.info("Renamed object: " + item.get().objectName() + " to: " + newObjectPath);
+
+                    minioClient.removeObject(RemoveObjectArgs.builder()
+                            .bucket(rootBucket)
+                            .object(item.get().objectName())
+                            .build());
+
+                    log.info("Deleted object: " + item.get().objectName());
+
+                } catch (ErrorResponseException | InsufficientDataException | InternalException | InvalidKeyException
+                         | InvalidResponseException | IOException | NoSuchAlgorithmException | ServerException
+                         | XmlParserException e) {
+                    log.error(e.getMessage());
+                }
+            });
+
+            log.info("Renamed object: " + path + " to: " + newPath);
+
+        } catch (Exception e) {
+            log.error(e.getMessage());
+
+            throw new InternalServerException(e.getMessage());
+        }
+
     }
 }
