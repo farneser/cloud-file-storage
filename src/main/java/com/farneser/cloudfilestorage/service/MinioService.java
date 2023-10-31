@@ -98,6 +98,11 @@ public class MinioService implements StorageService {
         minioRepository.deleteFolderRecursive(Paths.get(getUserFolderPath(), path).toString());
     }
 
+    @Override
+    public void rename(String path, String newName) throws InternalServerException {
+        minioRepository.rename(Paths.get(getUserFolderPath(), path).toString(), newName);
+    }
+
     private String getUserFolderPath() {
         var authentication = SecurityContextHolder.getContext().getAuthentication();
         var userDetails = (User) authentication.getPrincipal();
