@@ -107,7 +107,6 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-
     <build>
         <plugins>
             <plugin>
@@ -146,8 +145,6 @@
                     <configLocation>checkstyle.xml</configLocation>
                 </configuration>
             </plugin>
-
         </plugins>
     </build>
-
 </project>
