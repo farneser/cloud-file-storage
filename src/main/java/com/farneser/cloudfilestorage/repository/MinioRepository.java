@@ -207,7 +207,6 @@ public class MinioRepository {
                 try {
                     var newObjectPath = item.get().objectName().replace(originalPath.toString(), newPath.toString());
 
-
                     minioClient.copyObject(CopyObjectArgs.builder()
                             .source(CopySource.builder().bucket(rootBucket).object(item.get().objectName()).build())
                             .bucket(rootBucket)
@@ -223,9 +222,9 @@ public class MinioRepository {
 
                     log.info("Deleted object: " + item.get().objectName());
 
-                } catch (ErrorResponseException | InsufficientDataException | InternalException | InvalidKeyException |
-                         InvalidResponseException | IOException | NoSuchAlgorithmException | ServerException |
-                         XmlParserException e) {
+                } catch (ErrorResponseException | InsufficientDataException | InternalException | InvalidKeyException
+                         | InvalidResponseException | IOException | NoSuchAlgorithmException | ServerException
+                         | XmlParserException e) {
                     log.error(e.getMessage());
                 }
             });
