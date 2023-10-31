@@ -19,7 +19,9 @@
                        th:href="${'/storage?path=' + item.getValidUrlPath()}">Download</a>
                 </div>
                 <div>
-                    <button class="actions-button rename" th:value="${item.getItemPath()}" onclick="currentRename(this)">Rename</button>
+                    <button class="actions-button rename" onclick="currentRename(this)"
+                            th:value="${item.getItemPath()}">Rename
+                    </button>
                 </div>
 
                 <form action="/storage/delete" method="post">

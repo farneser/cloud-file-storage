@@ -10,7 +10,7 @@ function openPopup(formId) {
     controlsPopup.style.display = "flex";
 }
 
-function currentRename(button){
+function currentRename(button) {
     document.getElementById("renamePath").value = button.value;
 
     openPopup("rename-object-form")
