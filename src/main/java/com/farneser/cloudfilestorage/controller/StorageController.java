@@ -51,12 +51,13 @@ public class StorageController {
     @PostMapping("/rename")
     public String rename(
             @RequestParam("path") String path,
+            @RequestParam("objectPath") String objectPath,
             @RequestParam("newName") String newName,
             RedirectAttributes redirectAttributes) {
         var message = "";
 
         try {
-            storageService.rename(path, newName);
+            storageService.rename(objectPath, newName);
 
             message = "Object renamed successfully!";
         } catch (InternalServerException e) {

@@ -2,6 +2,7 @@
 
 <div th:if="${storageItems != null and storageItems.size() > 0}">
     <ul id="fileList">
+        <!--/*@thymesVar id="item" type="com.farneser.cloudfilestorage.dto.StorageDto"*/-->
         <li th:class="${item.isDir()} ? 'folder' : 'file'" th:each="item : ${storageItems}">
             <div th:if="${item.isDir()}">
                 <a class="fileList-title" th:href="${'/?path=' + item.getValidUrlPath()}"
@@ -18,7 +19,7 @@
                        th:href="${'/storage?path=' + item.getValidUrlPath()}">Download</a>
                 </div>
                 <div>
-                    <button class="actions-button rename">Rename</button>
+                    <button class="actions-button rename" th:value="${item.getItemPath()}" onclick="currentRename(this)">Rename</button>
                 </div>
 
                 <form action="/storage/delete" method="post">
