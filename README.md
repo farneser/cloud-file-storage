@@ -15,8 +15,10 @@
 
 Приложение будет доступно по пути [http://localhost:8080](http://localhost:8080)
 
+Можно использовать [docker-compose](docker-compose.yml) файл, который сделает всё автоматически
+
 ```bash
-sudo docker-compose up -f docker-compose-local.yml
+sudo docker-compose up 
 ```
 
 ### Бд на сервере
@@ -38,7 +40,8 @@ version: '3'
 
 services:
   cloud-file-storage:
-    image: farneser/cloud-file-storage:latest
+    container_name: cloud-file-storage
+    image: farneser/cloud-file-storage
     ports:
       - "8080:8080"
     environment:

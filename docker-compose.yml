@@ -1,0 +1,51 @@
+version: '3'
+services:
+  postgres:
+    image: postgres:latest
+    container_name: postgres-container
+    ports:
+      - "15432:5432"
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - data/postgres-data:/var/lib/postgresql/data
+      - data/init-scripts:/docker-entrypoint-initdb.d
+  redis:
+    image: redis:latest
+    container_name: redis-container
+    ports:
+      - "16379:6379"
+  minio:
+    image: minio/minio:latest
+    container_name: minio-container
+    environment:
+      MINIO_ACCESS_KEY: youraccesskey
+      MINIO_SECRET_KEY: yoursecretkey
+    ports:
+      - "19000:9000"
+      - "19001:9001"
+    volumes:
+      - data/minio-data:/data
+    command: server --console-address ":9001" /data
+  cloud-file-storage:
+    container_name: cloud-file-storage
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+      - minio
+      - redis
+    environment:
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_DB: cloud-file-storage
+      POSTGRES_USERNAME: postgres
+      POSTGRES_PASSWORD: postgres
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      MINIO_HOST: http://minio:9000
+      MINIO_ACCESS_KEY: youraccesskey
+      MINIO_SECRET_KEY: yoursecretkey
+      MINIO_FILES_BUCKET: user-files
