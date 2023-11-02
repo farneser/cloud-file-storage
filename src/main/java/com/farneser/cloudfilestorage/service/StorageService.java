@@ -5,6 +5,7 @@ import com.farneser.cloudfilestorage.dto.StorageDto;
 import com.farneser.cloudfilestorage.exception.EmptyQueryException;
 import com.farneser.cloudfilestorage.exception.InternalServerException;
 import com.farneser.cloudfilestorage.exception.MinioException;
+import com.farneser.cloudfilestorage.exception.NotFoundException;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -20,7 +21,7 @@ public interface StorageService {
 
     void uploadFile(String currentPath, MultipartFile file) throws MinioException;
 
-    FileDto download(String fullPath) throws MinioException, InternalServerException;
+    FileDto download(String fullPath) throws MinioException, InternalServerException, NotFoundException;
 
     void delete(String path) throws MinioException;
 

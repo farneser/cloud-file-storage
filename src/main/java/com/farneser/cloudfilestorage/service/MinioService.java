@@ -5,6 +5,7 @@ import com.farneser.cloudfilestorage.dto.StorageDto;
 import com.farneser.cloudfilestorage.exception.EmptyQueryException;
 import com.farneser.cloudfilestorage.exception.InternalServerException;
 import com.farneser.cloudfilestorage.exception.MinioException;
+import com.farneser.cloudfilestorage.exception.NotFoundException;
 import com.farneser.cloudfilestorage.models.User;
 import com.farneser.cloudfilestorage.repository.MinioRepository;
 import com.farneser.cloudfilestorage.utils.InputStreamUtils;
@@ -63,7 +64,7 @@ public class MinioService implements StorageService {
         minioRepository.uploadFile(Paths.get(getUserFolderPath(), currentPath).toString(), file);
     }
 
-    public FileDto download(String fullPath) throws MinioException, InternalServerException {
+    public FileDto download(String fullPath) throws MinioException, InternalServerException, NotFoundException {
         var result = new FileDto();
 
         result.setFileName(Paths.get(fullPath).getFileName().toString() + ".zip");
@@ -74,7 +75,7 @@ public class MinioService implements StorageService {
             // here I decided to leave the folder.ini files for download in order to preserve the folder structure
 
             if (files.isEmpty()) {
-                throw new InternalServerException("Not found");
+                throw new NotFoundException("File not found in path: " + fullPath);
             }
 
             if (files.size() == 1 && !files.get(0).getFileName().equals(FOLDER_STATIC_FILE_NAME)) {

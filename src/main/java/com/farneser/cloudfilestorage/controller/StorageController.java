@@ -2,6 +2,7 @@ package com.farneser.cloudfilestorage.controller;
 
 import com.farneser.cloudfilestorage.exception.InternalServerException;
 import com.farneser.cloudfilestorage.exception.MinioException;
+import com.farneser.cloudfilestorage.exception.NotFoundException;
 import com.farneser.cloudfilestorage.service.StorageService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.InputStreamResource;
@@ -38,22 +39,20 @@ public class StorageController {
 
             headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + encodedFileName + "\"");
 
-            return ResponseEntity.ok()
-                    .headers(headers)
-                    .body(new InputStreamResource(fileDto.getFile()));
-        } catch (MinioException | InternalServerException e) {
+            return ResponseEntity.ok().headers(headers).body(new InputStreamResource(fileDto.getFile()));
+        } catch (InternalServerException | MinioException e) {
             log.error(e.getMessage());
 
             return ResponseEntity.status(500).body(null);
+        } catch (NotFoundException e) {
+            log.error(e.getMessage());
+
+            return ResponseEntity.status(404).body(null);
         }
     }
 
     @PostMapping("/rename")
-    public String rename(
-            @RequestParam("path") String path,
-            @RequestParam("objectPath") String objectPath,
-            @RequestParam("newName") String newName,
-            RedirectAttributes redirectAttributes) {
+    public String rename(@RequestParam("path") String path, @RequestParam("objectPath") String objectPath, @RequestParam("newName") String newName, RedirectAttributes redirectAttributes) {
         var message = "";
 
         try {
@@ -72,10 +71,7 @@ public class StorageController {
     }
 
     @PostMapping("/file")
-    public String postFile(
-            @RequestParam("file") MultipartFile file,
-            @RequestParam(value = "path", defaultValue = "/") String path,
-            RedirectAttributes redirectAttributes) {
+    public String postFile(@RequestParam("file") MultipartFile file, @RequestParam(value = "path", defaultValue = "/") String path, RedirectAttributes redirectAttributes) {
         var message = "";
 
         try {
@@ -92,10 +88,7 @@ public class StorageController {
     }
 
     @PostMapping("/folder")
-    public String postFolder(
-            @RequestParam("folder") MultipartFile[] folder,
-            @RequestParam(value = "path", defaultValue = "/") String path,
-            RedirectAttributes redirectAttributes) {
+    public String postFolder(@RequestParam("folder") MultipartFile[] folder, @RequestParam(value = "path", defaultValue = "/") String path, RedirectAttributes redirectAttributes) {
 
         var message = "";
 
@@ -115,10 +108,7 @@ public class StorageController {
     }
 
     @PostMapping("/folder/create")
-    public String createFolder(
-            @RequestParam("path") String path,
-            @RequestParam("folderName") String folderName,
-            RedirectAttributes redirectAttributes) {
+    public String createFolder(@RequestParam("path") String path, @RequestParam("folderName") String folderName, RedirectAttributes redirectAttributes) {
         var message = "";
 
         try {
@@ -136,10 +126,7 @@ public class StorageController {
     }
 
     @PostMapping("/delete")
-    public String delete(
-            @RequestParam("path") String path,
-            @RequestParam("objectName") String objectName,
-            RedirectAttributes redirectAttributes) {
+    public String delete(@RequestParam("path") String path, @RequestParam("objectName") String objectName, RedirectAttributes redirectAttributes) {
         var message = "";
 
         try {
