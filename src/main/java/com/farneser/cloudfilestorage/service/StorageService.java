@@ -1,6 +1,7 @@
 package com.farneser.cloudfilestorage.service;
 
 import com.farneser.cloudfilestorage.dto.FileDto;
+import com.farneser.cloudfilestorage.dto.SearchDto;
 import com.farneser.cloudfilestorage.dto.StorageDto;
 import com.farneser.cloudfilestorage.exception.EmptyQueryException;
 import com.farneser.cloudfilestorage.exception.InternalServerException;
@@ -15,7 +16,7 @@ public interface StorageService {
 
     List<StorageDto> getPathItems(String path) throws InternalServerException;
 
-    List<StorageDto> searchItems(String query) throws InternalServerException, EmptyQueryException;
+    List<SearchDto> searchItems(String query) throws InternalServerException, EmptyQueryException;
 
     void createUserInitialFolder(long userId) throws MinioException;
 
