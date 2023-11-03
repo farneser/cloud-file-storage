@@ -1,0 +1,21 @@
+<link rel="stylesheet" th:href="@{/styles/components/search-items.css}"/>
+
+<div th:if="${searchItems != null and searchItems.size() > 0}">
+    <ul id="fileList">
+        <!--/*@thymesVar id="item" type="com.farneser.cloudfilestorage.dto.StorageDto"*/-->
+        <li th:class="${item.isDir()} ? 'folder' : 'file'" th:each="item : ${searchItems}">
+            <div th:if="${item.isDir()}">
+                <a class="fileList-title" th:href="${'/?path=' + item.getValidUrlPath()}"
+                   th:text="${item.getItemName()}"></a>
+            </div>
+
+            <div th:unless="${item.isDir()}">
+                <span class="fileList-title" th:text="${item.getItemName()}"></span>
+            </div>
+        </li>
+    </ul>
+</div>
+
+<div th:unless="${searchItems == null or searchItems.size() == 0}">
+    <div class="not-found">Search items not found</div>
+</div>

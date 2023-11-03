@@ -34,6 +34,6 @@
     </ul>
 </div>
 
-<div th:unless="${storageItems != null and storageItems.size() > 0}">
+<div th:unless="${storageItems == null or storageItems.size() == 0}">
     <div class="not-found">Storage items not found</div>
 </div>
