@@ -9,7 +9,8 @@
                 <ul class="item-path-parts" style="display: flex">
                     <li th:class="${item.isDir()} ? 'folder' : 'file'"
                         th:each="pathPart, iterStat : ${item.getPathParts()}">
-                        <a class="path-link" th:classappend="${iterStat.last && !item.isDir()} ? 'post-link-file-last' : ''"
+                        <a class="path-link"
+                           th:classappend="${iterStat.last && !item.isDir()} ? 'post-link-file-last' : ''"
                            th:href="${'/?path=' + pathPart.getPath()}"
                            th:text="${pathPart.getLabel()}"></a>
                     </li>
