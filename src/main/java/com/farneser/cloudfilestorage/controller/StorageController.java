@@ -3,7 +3,7 @@ package com.farneser.cloudfilestorage.controller;
 import com.farneser.cloudfilestorage.exception.InternalServerException;
 import com.farneser.cloudfilestorage.exception.MinioException;
 import com.farneser.cloudfilestorage.exception.NotFoundException;
-import com.farneser.cloudfilestorage.service.StorageService;
+import com.farneser.cloudfilestorage.service.storage.StorageService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;

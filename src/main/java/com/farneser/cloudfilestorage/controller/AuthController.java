@@ -4,8 +4,8 @@ import com.farneser.cloudfilestorage.dto.RegisterDto;
 import com.farneser.cloudfilestorage.exception.MinioException;
 import com.farneser.cloudfilestorage.exception.UserRegistrationException;
 import com.farneser.cloudfilestorage.models.User;
-import com.farneser.cloudfilestorage.service.MinioService;
 import com.farneser.cloudfilestorage.service.UserService;
+import com.farneser.cloudfilestorage.service.storage.StorageService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,12 +20,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class AuthController {
 
     private final UserService userService;
-    private final MinioService minioService;
+    private final StorageService storageService;
 
     @Autowired
-    public AuthController(UserService userService, MinioService minioService) {
+    public AuthController(UserService userService, StorageService storageService) {
         this.userService = userService;
-        this.minioService = minioService;
+        this.storageService = storageService;
     }
 
     @GetMapping("/login")
@@ -48,7 +48,7 @@ public class AuthController {
 
             log.info("created a new user - " + user.toString());
 
-            minioService.createUserInitialFolder(user.getId());
+            storageService.createUserInitialFolder(user.getId());
 
             log.info("created a user bucket - " + user.getId());
         } catch (UserRegistrationException | MinioException e) {
