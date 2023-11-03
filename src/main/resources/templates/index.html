@@ -9,12 +9,12 @@
 </head>
 <body>
 
-<div th:replace="~{components/header}"></div>
+<div th:replace="~{components/header :: header}"></div>
 
 <main>
-    <div th:replace="~{components/controls}"></div>
+    <div th:replace="~{components/controls :: controls}"></div>
 
-    <div th:replace="~{components/path-bar}"></div>
+    <div th:replace="~{components/path-bar :: path-bar(pathParts = ${pathParts})}"></div>
 
     <div id="main">
         <!--/*@thymesVar id="message" type="java.lang.String"*/-->
@@ -27,7 +27,7 @@
     </div>
 </main>
 
-<div th:replace="~{components/footer}"></div>
+<div th:replace="~{components/footer :: footer}"></div>
 
 </body>
 </html>

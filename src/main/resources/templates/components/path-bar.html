@@ -1,6 +1,5 @@
-<link rel="stylesheet" th:href="@{/styles/components/path-bar.css}"/>
-
-<div th:if="pathParts != null">
+<div th:fragment="path-bar" th:if="pathParts != null">
+    <link rel="stylesheet" th:href="@{/styles/components/path-bar.css}"/>
     <nav class="path-bar">
         <ul>
             <!--/*@thymesVar id="pathParts" type="java.util.ArrayList<com.farneser.cloudfilestorage.dto.PathPartDto>"*/-->

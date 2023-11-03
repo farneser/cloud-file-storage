@@ -1,11 +1,10 @@
 package com.farneser.cloudfilestorage.dto;
 
+import com.farneser.cloudfilestorage.utils.UrlUtils;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
 
 @Data
@@ -13,15 +12,11 @@ import java.nio.file.Paths;
 @AllArgsConstructor
 public class StorageDto {
 
-    private String itemPath;
-    private boolean isDir;
+    protected String itemPath;
+    protected boolean isDir;
 
     public boolean isDir() {
-        if (itemPath.endsWith("/")) {
-            return true;
-        }
-
-        return isDir;
+        return itemPath.endsWith("/") || isDir;
     }
 
     public String getItemName() {
@@ -34,10 +29,6 @@ public class StorageDto {
     }
 
     public String getValidUrlPath() {
-        return URLEncoder.encode(itemPath, StandardCharsets.UTF_8)
-                .replaceAll("\\+", "%20")
-                .replaceAll("%21", "!")
-                .replaceAll("%23", "#")
-                .replaceAll("%3F", "?");
+        return UrlUtils.getValidUrlPath(itemPath);
     }
 }

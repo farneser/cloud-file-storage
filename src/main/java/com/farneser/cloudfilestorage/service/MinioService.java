@@ -1,6 +1,7 @@
 package com.farneser.cloudfilestorage.service;
 
 import com.farneser.cloudfilestorage.dto.FileDto;
+import com.farneser.cloudfilestorage.dto.SearchDto;
 import com.farneser.cloudfilestorage.dto.StorageDto;
 import com.farneser.cloudfilestorage.exception.EmptyQueryException;
 import com.farneser.cloudfilestorage.exception.InternalServerException;
@@ -45,7 +46,7 @@ public class MinioService implements StorageService {
     }
 
     @Override
-    public List<StorageDto> searchItems(String query) throws InternalServerException, EmptyQueryException {
+    public List<SearchDto> searchItems(String query) throws InternalServerException, EmptyQueryException {
 
         if (query == null || query.isEmpty() || query.equals("/")) {
             throw new EmptyQueryException("query: " + query + " is empty");
@@ -53,7 +54,7 @@ public class MinioService implements StorageService {
 
         var items = minioRepository.search(getUserFolderPath(), query);
 
-        return MinioUtils.convertItemToStorageDto(items, FOLDER_STATIC_FILE_NAME);
+        return MinioUtils.convertItemToSearchDto(items, FOLDER_STATIC_FILE_NAME);
     }
 
     public void createUserInitialFolder(long userId) throws MinioException {

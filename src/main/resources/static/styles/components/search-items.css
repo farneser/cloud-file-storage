@@ -1,0 +1,17 @@
+
+#fileList .file, #fileList .folder {
+    color: #007BFF;
+}
+
+#fileList .item-path-parts .file:last-child {
+    color: #333;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.item-path-parts .file:last-child {
+    color: red;
+}

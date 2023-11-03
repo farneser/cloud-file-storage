@@ -1,21 +1,26 @@
-<link rel="stylesheet" th:href="@{/styles/components/search-items.css}"/>
+<div th:fragment="search-items">
+    <link rel="stylesheet" th:href="@{/styles/components/storage-items.css}"/>
+    <link rel="stylesheet" th:href="@{/styles/components/search-items.css}"/>
 
-<div th:if="${searchItems != null and searchItems.size() > 0}">
-    <ul id="fileList">
-        <!--/*@thymesVar id="item" type="com.farneser.cloudfilestorage.dto.StorageDto"*/-->
-        <li th:class="${item.isDir()} ? 'folder' : 'file'" th:each="item : ${searchItems}">
-            <div th:if="${item.isDir()}">
-                <a class="fileList-title" th:href="${'/?path=' + item.getValidUrlPath()}"
-                   th:text="${item.getItemName()}"></a>
-            </div>
+    <div th:if="${searchItems != null and searchItems.size() > 0}">
+        <ul id="fileList">
+            <!--/*@thymesVar id="item" type="com.farneser.cloudfilestorage.dto.SearchDto"*/-->
+            <li th:each="item : ${searchItems}">
+                <ul class="item-path-parts" style="display: flex">
+                    <li th:class="${item.isDir()} ? 'folder' : 'file'"
+                        th:each="pathPart, iterStat : ${item.getPathParts()}">
+                        <a class="path-link" th:classappend="${iterStat.last && !item.isDir()} ? 'post-link-file-last' : ''"
+                           th:href="${'/?path=' + pathPart.getPath()}"
+                           th:text="${pathPart.getLabel()}"></a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
 
-            <div th:unless="${item.isDir()}">
-                <span class="fileList-title" th:text="${item.getItemName()}"></span>
-            </div>
-        </li>
-    </ul>
-</div>
+    <div th:if="${searchItems == null or searchItems.size() == 0}">
+        <div class="not-found">Search items not found</div>
+    </div>
 
-<div th:unless="${searchItems == null or searchItems.size() == 0}">
-    <div class="not-found">Search items not found</div>
+    <script th:src="@{/scripts/components/search-items.js}"></script>
 </div>

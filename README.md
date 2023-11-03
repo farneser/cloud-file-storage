@@ -29,7 +29,7 @@ sudo docker-compose up
 sudo docker-compose up -f docker-compose-remote.yml
 ```
 
-## Docker
+## DockerSERVER_PORT
 
 Образ доступен на [DockerHub](https://hub.docker.com/repository/docker/farneser/cloud-file-storage/general)
 
@@ -82,6 +82,7 @@ docker-compose up -d
 | MINIO_SECRET_KEY   |                         | секретный ключ базы minio                                                                                                                                 |
 | MINIO_FILES_BUCKET | `user-files`            | наименование корневого бакета в minio                                                                                                                     |
 | LOGGING_LEVEL      | `INFO`                  | [Уровень логирования](https://docs.spring.io/spring-boot/docs/2.1.13.RELEASE/reference/html/boot-features-logging.html) (ERROR, WARN, INFO, DEBUG, TRACE) |
+| SERVER_PORT        | `8080`                  | Порт приложения                                                                                                                                           |
 
 ## Функционал приложения
 

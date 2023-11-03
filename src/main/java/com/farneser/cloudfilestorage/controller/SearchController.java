@@ -29,7 +29,7 @@ public class SearchController {
         try {
             var items = storageService.searchItems(path);
 
-            model.addAttribute("storageItems", items);
+            model.addAttribute("searchItems", items);
 
         } catch (InternalServerException | EmptyQueryException e) {
             log.error(e.getMessage());
