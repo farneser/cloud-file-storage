@@ -57,12 +57,7 @@ public class MinioRepository {
 
     public void createFolder(String rawPath) throws MinioException {
         try {
-            minioClient.putObject(PutObjectArgs
-                    .builder()
-                    .bucket(rootBucket)
-                    .object(rawPath)
-                    .stream(new ByteArrayInputStream(new byte[0]), 0, -1)
-                    .build());
+            minioClient.putObject(PutObjectArgs.builder().bucket(rootBucket).object(rawPath).stream(new ByteArrayInputStream(new byte[0]), 0, -1).build());
             log.info("Created folder: " + rawPath);
         } catch (Exception e) {
             log.error(e.getMessage());
@@ -91,8 +86,15 @@ public class MinioRepository {
             for (var result : objects) {
                 var item = result.get();
 
-                this.delete(item.objectName());
-                log.info("Deleted object: " + item.objectName());
+                // If item is a directory or if the path is not a directory and the path is equal to the item name
+                // then delete the item
+
+                if (item.isDir() || path.length() - 1 < item.objectName().lastIndexOf("/")
+                        || !item.isDir() && item.objectName().equals(path)) {
+                    this.delete(item.objectName());
+
+                    log.info("Deleted object: " + item.objectName());
+                }
             }
 
             this.delete(path);
@@ -207,18 +209,11 @@ public class MinioRepository {
                 try {
                     var newObjectPath = item.get().objectName().replace(originalPath.toString(), newPath.toString());
 
-                    minioClient.copyObject(CopyObjectArgs.builder()
-                            .source(CopySource.builder().bucket(rootBucket).object(item.get().objectName()).build())
-                            .bucket(rootBucket)
-                            .object(newObjectPath)
-                            .build());
+                    minioClient.copyObject(CopyObjectArgs.builder().source(CopySource.builder().bucket(rootBucket).object(item.get().objectName()).build()).bucket(rootBucket).object(newObjectPath).build());
 
                     log.info("Renamed object: " + item.get().objectName() + " to: " + newObjectPath);
 
-                    minioClient.removeObject(RemoveObjectArgs.builder()
-                            .bucket(rootBucket)
-                            .object(item.get().objectName())
-                            .build());
+                    minioClient.removeObject(RemoveObjectArgs.builder().bucket(rootBucket).object(item.get().objectName()).build());
 
                     log.info("Deleted object: " + item.get().objectName());
 
