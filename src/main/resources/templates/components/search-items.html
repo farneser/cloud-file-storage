@@ -1,4 +1,5 @@
 <div th:fragment="search-items">
+    <link rel="stylesheet" th:href="@{/styles/components/storage-items.css}"/>
     <link rel="stylesheet" th:href="@{/styles/components/search-items.css}"/>
 
     <div th:if="${searchItems != null and searchItems.size() > 0}">
