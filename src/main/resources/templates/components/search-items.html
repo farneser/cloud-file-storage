@@ -5,18 +5,17 @@
         <ul id="fileList">
             <!--/*@thymesVar id="item" type="com.farneser.cloudfilestorage.dto.SearchDto"*/-->
             <li th:each="item : ${searchItems}">
-                <ul style="display: flex" class="item-path-parts">
+                <ul class="item-path-parts" style="display: flex">
                     <li th:class="${item.isDir()} ? 'folder' : 'file'"
                         th:each="pathPart, iterStat : ${item.getPathParts()}">
-                        <a class="path-link" th:href="${'/?path=' + pathPart.getPath()}"
-                           th:text="${pathPart.getLabel()}"
-                           th:classappend="${iterStat.last && !item.isDir()} ? 'post-link-file-last' : ''"></a>
+                        <a class="path-link" th:classappend="${iterStat.last && !item.isDir()} ? 'post-link-file-last' : ''"
+                           th:href="${'/?path=' + pathPart.getPath()}"
+                           th:text="${pathPart.getLabel()}"></a>
                     </li>
                 </ul>
             </li>
         </ul>
     </div>
-
 
     <div th:if="${searchItems == null or searchItems.size() == 0}">
         <div class="not-found">Search items not found</div>
