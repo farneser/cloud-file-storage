@@ -1,6 +1,6 @@
 <link rel="stylesheet" th:href="@{/styles/components/controls.css}"/>
 
-<nav id="controls">
+<nav id="controls" th:fragment="controls">
     <ul>
         <li id="create-folder">Create Folder</li>
         <li id="post-file">Post File</li>
@@ -8,4 +8,4 @@
     </ul>
 </nav>
 
-<div th:replace="~{components/popup}"></div>
+<div th:replace="~{components/popup :: popup}"></div>
