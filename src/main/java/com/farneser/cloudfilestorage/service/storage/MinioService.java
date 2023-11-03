@@ -31,13 +31,13 @@ public class MinioService extends BaseStorageService {
     }
 
     public void createFolder(String path, String folderName) throws MinioException {
-        var fullPath = Paths.get(getUserFolderPath(), path, folderName, FOLDER_STATIC_FILE_NAME).toString();
-        minioRepository.createFolder(fullPath);
+        var fullPath = Paths.get(path, folderName, FOLDER_STATIC_FILE_NAME).toString();
+        minioRepository.createFolder(getUserId(), fullPath);
     }
 
     @Override
     public List<StorageDto> getPathItems(String path) throws InternalServerException {
-        var items = minioRepository.getPathItems(Paths.get(getUserFolderPath(), path).toString());
+        var items = minioRepository.getPathItems(getUserId(), path);
 
         return MinioUtils.convertItemToStorageDto(items, FOLDER_STATIC_FILE_NAME);
     }
@@ -49,17 +49,17 @@ public class MinioService extends BaseStorageService {
             throw new EmptyQueryException("query: " + query + " is empty");
         }
 
-        var items = minioRepository.search(getUserFolderPath(), query);
+        var items = minioRepository.search(getUserId(), query);
 
         return MinioUtils.convertItemToSearchDto(items, FOLDER_STATIC_FILE_NAME);
     }
 
     public void createUserInitialFolder(long userId) throws MinioException {
-        minioRepository.createFolder(Paths.get(UserUtils.getUserBucket(userId), FOLDER_STATIC_FILE_NAME).toString());
+        minioRepository.createFolder(getUserId(), Paths.get(UserUtils.getUserBucket(userId), FOLDER_STATIC_FILE_NAME).toString());
     }
 
     public void uploadFile(String currentPath, MultipartFile file) throws MinioException {
-        minioRepository.uploadFile(Paths.get(getUserFolderPath(), currentPath).toString(), file);
+        minioRepository.uploadFile(getUserId(), currentPath, file);
     }
 
     public FileDto download(String fullPath) throws MinioException, InternalServerException, NotFoundException {
@@ -68,7 +68,7 @@ public class MinioService extends BaseStorageService {
         result.setFileName(Paths.get(fullPath).getFileName().toString() + ".zip");
 
         try {
-            var files = minioRepository.download(Paths.get(getUserFolderPath(), fullPath).toString());
+            var files = minioRepository.download(getUserId(), fullPath);
 
             // here I decided to leave the folder.ini files for download in order to preserve the folder structure
 
@@ -94,11 +94,11 @@ public class MinioService extends BaseStorageService {
 
     @Override
     public void delete(String path) throws MinioException {
-        minioRepository.deleteFolderRecursive(Paths.get(getUserFolderPath(), path).toString());
+        minioRepository.deleteFolderRecursive(getUserId(), path);
     }
 
     @Override
     public void rename(String path, String newName) throws InternalServerException {
-        minioRepository.rename(Paths.get(getUserFolderPath(), path).toString(), newName);
+        minioRepository.rename(getUserId(), path, newName);
     }
 }
