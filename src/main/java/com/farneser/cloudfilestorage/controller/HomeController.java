@@ -2,7 +2,7 @@ package com.farneser.cloudfilestorage.controller;
 
 import com.farneser.cloudfilestorage.dto.PathPartDto;
 import com.farneser.cloudfilestorage.exception.InternalServerException;
-import com.farneser.cloudfilestorage.service.StorageService;
+import com.farneser.cloudfilestorage.service.storage.StorageService;
 import com.farneser.cloudfilestorage.utils.UrlUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
