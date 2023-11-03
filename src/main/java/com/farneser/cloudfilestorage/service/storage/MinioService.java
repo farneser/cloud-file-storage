@@ -1,4 +1,4 @@
-package com.farneser.cloudfilestorage.service;
+package com.farneser.cloudfilestorage.service.storage;
 
 import com.farneser.cloudfilestorage.dto.FileDto;
 import com.farneser.cloudfilestorage.dto.SearchDto;
@@ -7,14 +7,12 @@ import com.farneser.cloudfilestorage.exception.EmptyQueryException;
 import com.farneser.cloudfilestorage.exception.InternalServerException;
 import com.farneser.cloudfilestorage.exception.MinioException;
 import com.farneser.cloudfilestorage.exception.NotFoundException;
-import com.farneser.cloudfilestorage.models.User;
 import com.farneser.cloudfilestorage.repository.MinioRepository;
 import com.farneser.cloudfilestorage.utils.InputStreamUtils;
 import com.farneser.cloudfilestorage.utils.MinioUtils;
 import com.farneser.cloudfilestorage.utils.UserUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -24,8 +22,7 @@ import java.util.List;
 
 @Slf4j
 @Service
-public class MinioService implements StorageService {
-    private static final String FOLDER_STATIC_FILE_NAME = "folder.ini";
+public class MinioService extends BaseStorageService {
     private final MinioRepository minioRepository;
 
     @Autowired
@@ -103,12 +100,5 @@ public class MinioService implements StorageService {
     @Override
     public void rename(String path, String newName) throws InternalServerException {
         minioRepository.rename(Paths.get(getUserFolderPath(), path).toString(), newName);
-    }
-
-    private String getUserFolderPath() {
-        var authentication = SecurityContextHolder.getContext().getAuthentication();
-        var userDetails = (User) authentication.getPrincipal();
-
-        return UserUtils.getUserBucket(userDetails.getId());
     }
 }

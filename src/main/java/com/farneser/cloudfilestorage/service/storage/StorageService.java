@@ -1,4 +1,4 @@
-package com.farneser.cloudfilestorage.service;
+package com.farneser.cloudfilestorage.service.storage;
 
 import com.farneser.cloudfilestorage.dto.FileDto;
 import com.farneser.cloudfilestorage.dto.SearchDto;
