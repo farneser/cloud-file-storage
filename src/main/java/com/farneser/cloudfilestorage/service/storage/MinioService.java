@@ -10,7 +10,6 @@ import com.farneser.cloudfilestorage.exception.NotFoundException;
 import com.farneser.cloudfilestorage.repository.MinioRepository;
 import com.farneser.cloudfilestorage.utils.InputStreamUtils;
 import com.farneser.cloudfilestorage.utils.MinioUtils;
-import com.farneser.cloudfilestorage.utils.UserUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -55,7 +54,7 @@ public class MinioService extends BaseStorageService {
     }
 
     public void createUserInitialFolder(long userId) throws MinioException {
-        minioRepository.createFolder(getUserId(), Paths.get(UserUtils.getUserBucket(userId), FOLDER_STATIC_FILE_NAME).toString());
+        minioRepository.createFolder(userId, "/" + FOLDER_STATIC_FILE_NAME);
     }
 
     public void uploadFile(String currentPath, MultipartFile file) throws MinioException {
