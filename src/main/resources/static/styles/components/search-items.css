@@ -1,0 +1,58 @@
+
+#fileList {
+    list-style-type: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+#fileList li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    margin: 5px 0;
+    padding: 10px;
+}
+
+#fileList .file, #fileList .folder {
+    color: #007BFF;
+}
+
+#fileList .item-path-parts .file:last-child {
+    color: #333;
+}
+
+#fileList .actions {
+    display: flex;
+    gap: 10px;
+}
+
+#fileList .actions .actions-button {
+    display: block;
+    padding: 5px 10px;
+    font-size: 100%;
+    background-color: #007BFF;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
+#fileList .actions .actions-button:hover {
+    background-color: #0056b3;
+}
+
+#fileList .fileList-title, #fileList {
+    color: inherit;
+    text-decoration: none;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.item-path-parts .file:last-child {
+    color: red;
+}
