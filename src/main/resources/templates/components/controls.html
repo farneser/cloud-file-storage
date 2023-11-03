@@ -1,11 +1,10 @@
-<link rel="stylesheet" th:href="@{/styles/components/controls.css}"/>
-
 <nav id="controls" th:fragment="controls">
+    <link rel="stylesheet" th:href="@{/styles/components/controls.css}"/>
     <ul>
         <li id="create-folder">Create Folder</li>
         <li id="post-file">Post File</li>
         <li id="post-folder">Post Folder</li>
     </ul>
-</nav>
 
-<div th:replace="~{components/popup :: popup}"></div>
+    <div th:replace="~{components/popup :: popup}"></div>
+</nav>

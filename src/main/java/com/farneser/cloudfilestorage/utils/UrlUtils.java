@@ -41,6 +41,11 @@ public abstract class UrlUtils {
                     .collect(Collectors.joining("/")), pathParts.get(i) + "/"));
         }
 
+        if (result.size() > 1) {
+            var pathDto = result.get(result.size() - 1);
+            pathDto.setLabel(pathDto.getLabel().substring(0, pathDto.getLabel().length() - 1));
+        }
+
         return result;
     }
 }
