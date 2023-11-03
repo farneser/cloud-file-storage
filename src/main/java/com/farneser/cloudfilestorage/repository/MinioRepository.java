@@ -3,6 +3,7 @@ package com.farneser.cloudfilestorage.repository;
 import com.farneser.cloudfilestorage.dto.FileDto;
 import com.farneser.cloudfilestorage.exception.InternalServerException;
 import com.farneser.cloudfilestorage.exception.MinioException;
+import com.farneser.cloudfilestorage.utils.UserUtils;
 import io.minio.*;
 import io.minio.errors.*;
 import io.minio.messages.Item;
@@ -32,8 +33,8 @@ public class MinioRepository {
         this.minioClient = minioClient;
     }
 
-    public List<Item> getPathItems(String path) throws InternalServerException {
-        path = prettyFolderPath(path);
+    public List<Item> getPathItems(long userId, String rawPath) throws InternalServerException {
+        var path = prettyFolderPath(Paths.get(getUserFolder(userId), rawPath).toString());
 
         var result = new ArrayList<Item>();
 
@@ -55,9 +56,11 @@ public class MinioRepository {
         return result;
     }
 
-    public void createFolder(String rawPath) throws MinioException {
+    public void createFolder(long userId, String rawPath) throws MinioException {
+        var path = Paths.get(getUserFolder(userId), rawPath).toString();
+
         try {
-            minioClient.putObject(PutObjectArgs.builder().bucket(rootBucket).object(rawPath).stream(new ByteArrayInputStream(new byte[0]), 0, -1).build());
+            minioClient.putObject(PutObjectArgs.builder().bucket(rootBucket).object(path).stream(new ByteArrayInputStream(new byte[0]), 0, -1).build());
             log.info("Created folder: " + rawPath);
         } catch (Exception e) {
             log.error(e.getMessage());
@@ -79,7 +82,9 @@ public class MinioRepository {
         }
     }
 
-    public void deleteFolderRecursive(String path) throws MinioException {
+    public void deleteFolderRecursive(long userId, String rawPath) throws MinioException {
+        var path = Paths.get(getUserFolder(userId), rawPath).toString();
+
         try {
             var objects = minioClient.listObjects(ListObjectsArgs.builder().bucket(rootBucket).recursive(true).prefix(path).build());
 
@@ -116,7 +121,9 @@ public class MinioRepository {
         return rawFolder;
     }
 
-    public void uploadFile(String fullPath, MultipartFile file) throws MinioException {
+    public void uploadFile(long userId, String rawFullPath, MultipartFile file) throws MinioException {
+        var fullPath = Paths.get(getUserFolder(userId), rawFullPath).toString();
+
         try {
             minioClient.putObject(PutObjectArgs.builder().bucket(rootBucket).object(Paths.get(fullPath, file.getOriginalFilename()).toString()).stream(file.getInputStream(), file.getSize(), -1).contentType(file.getContentType()).build());
 
@@ -138,8 +145,10 @@ public class MinioRepository {
         }
     }
 
-    public List<FileDto> download(String fullPath) throws MinioException {
+    public List<FileDto> download(long userId, String rawFullPath) throws MinioException {
         var result = new ArrayList<FileDto>();
+
+        var fullPath = Paths.get(getUserFolder(userId), rawFullPath).toString();
 
         try {
             var files = minioClient.listObjects(ListObjectsArgs.builder().bucket(rootBucket).prefix(fullPath).recursive(true).build());
@@ -175,10 +184,10 @@ public class MinioRepository {
         }
     }
 
-    public List<Item> search(String userFolderPath, String query) throws InternalServerException {
+    public List<Item> search(long userId, String query) throws InternalServerException {
         var result = new ArrayList<Item>();
 
-        var itemList = minioClient.listObjects(ListObjectsArgs.builder().bucket(rootBucket).prefix(userFolderPath).recursive(true).build());
+        var itemList = minioClient.listObjects(ListObjectsArgs.builder().bucket(rootBucket).prefix(getUserFolder(userId)).recursive(true).build());
 
         try {
             for (var item : itemList) {
@@ -195,11 +204,10 @@ public class MinioRepository {
         return result;
     }
 
-    public void rename(String path, String newName) throws InternalServerException {
+    public void rename(long userId, String path, String newName) throws InternalServerException {
 
         try {
-
-            var originalPath = Paths.get(path);
+            var originalPath = Paths.get(getUserFolder(userId), path);
 
             var newPath = originalPath.resolveSibling(newName);
 
@@ -231,6 +239,9 @@ public class MinioRepository {
 
             throw new InternalServerException(e.getMessage());
         }
+    }
 
+    private String getUserFolder(long userId) {
+        return UserUtils.getUserBucket(userId);
     }
 }
