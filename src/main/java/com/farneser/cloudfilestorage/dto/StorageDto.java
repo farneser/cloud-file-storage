@@ -12,15 +12,11 @@ import java.nio.file.Paths;
 @AllArgsConstructor
 public class StorageDto {
 
-    private String itemPath;
-    private boolean isDir;
+    protected String itemPath;
+    protected boolean isDir;
 
     public boolean isDir() {
-        if (itemPath.endsWith("/")) {
-            return true;
-        }
-
-        return isDir;
+        return itemPath.endsWith("/") || isDir;
     }
 
     public String getItemName() {
