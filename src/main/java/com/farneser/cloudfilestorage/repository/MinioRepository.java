@@ -230,9 +230,9 @@ public class MinioRepository {
                         log.info("Deleted object: " + item.get().objectName());
                     }
 
-                } catch (ErrorResponseException | InsufficientDataException | InternalException | InvalidKeyException |
-                         InvalidResponseException | IOException | NoSuchAlgorithmException | ServerException |
-                         XmlParserException e) {
+                } catch (ErrorResponseException | InsufficientDataException | InternalException | InvalidKeyException
+                         | InvalidResponseException | IOException | NoSuchAlgorithmException | ServerException
+                         | XmlParserException e) {
                     log.error(e.getMessage());
                 }
             });
