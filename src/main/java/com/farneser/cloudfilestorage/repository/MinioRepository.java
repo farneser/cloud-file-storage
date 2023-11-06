@@ -94,8 +94,7 @@ public class MinioRepository {
                 // If item is a directory or if the path is not a directory and the path is equal to the item name
                 // then delete the item
 
-                if (item.isDir() || path.length() - 1 < item.objectName().lastIndexOf("/")
-                        || !item.isDir() && item.objectName().equals(path)) {
+                if (isPathOverrideObject(item.isDir(), path, item.objectName())) {
                     this.delete(item.objectName());
 
                     log.info("Deleted object: " + item.objectName());
@@ -111,6 +110,10 @@ public class MinioRepository {
 
             throw new MinioException(e.getMessage());
         }
+    }
+
+    private boolean isPathOverrideObject(boolean isDir, String path, String objectName) {
+        return isDir || path.length() - 1 < objectName.lastIndexOf("/") || objectName.equals(path);
     }
 
     private String prettyFolderPath(String rawFolder) {
@@ -211,19 +214,21 @@ public class MinioRepository {
 
             var newPath = originalPath.resolveSibling(newName);
 
-            var items = minioClient.listObjects(ListObjectsArgs.builder().bucket(rootBucket).prefix(path).recursive(true).build());
+            var items = minioClient.listObjects(ListObjectsArgs.builder().bucket(rootBucket).prefix(originalPath.toString()).recursive(true).build());
 
             items.forEach(item -> {
                 try {
                     var newObjectPath = item.get().objectName().replace(originalPath.toString(), newPath.toString());
 
-                    minioClient.copyObject(CopyObjectArgs.builder().source(CopySource.builder().bucket(rootBucket).object(item.get().objectName()).build()).bucket(rootBucket).object(newObjectPath).build());
+                    if (isPathOverrideObject(item.get().isDir(), originalPath.toString(), item.get().objectName())) {
+                        minioClient.copyObject(CopyObjectArgs.builder().source(CopySource.builder().bucket(rootBucket).object(item.get().objectName()).build()).bucket(rootBucket).object(newObjectPath).build());
 
-                    log.info("Renamed object: " + item.get().objectName() + " to: " + newObjectPath);
+                        log.info("Renamed object: " + item.get().objectName() + " to: " + newObjectPath);
 
-                    minioClient.removeObject(RemoveObjectArgs.builder().bucket(rootBucket).object(item.get().objectName()).build());
+                        minioClient.removeObject(RemoveObjectArgs.builder().bucket(rootBucket).object(item.get().objectName()).build());
 
-                    log.info("Deleted object: " + item.get().objectName());
+                        log.info("Deleted object: " + item.get().objectName());
+                    }
 
                 } catch (ErrorResponseException | InsufficientDataException | InternalException | InvalidKeyException
                          | InvalidResponseException | IOException | NoSuchAlgorithmException | ServerException

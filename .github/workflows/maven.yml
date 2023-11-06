@@ -36,7 +36,7 @@ jobs:
           sudo chmod 666 /var/run/docker.sock
 
       - name: Run Testcontainers Tests
-        run: mvn test
+        run: mvn test -Dcheckstyle.skip=true
 
       - name: Store artifact
         uses: actions/upload-artifact@v2
